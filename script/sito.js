@@ -1029,7 +1029,7 @@
   const cmdEl = $('#cmd');
   const quando = s => { const d = new Date(s); return isNaN(d) ? '—' : `${dataIt(d)} ${oraIt(d)}`; };
   const nomeEsame = id => { if (id === 'finale') return 'Esame d\'accademia'; const c = ESAMI.capitoli.find(x => x.id === id); return c ? `Cap. ${c.n} · ${c.titolo}` : id; };
-  const gradoUtente = id => AC.find(p => p.discordId === id)?.grado || 'Alto Comando';
+  const gradoUtente = id => AC.find(p => p.discordId === id)?.grado || 'Accesso Area Comando';
   const portaCmd = (tit, testo, extra = '') => `<div class="cmd-porta"><div class="cmd-lucchetto">${LUCCHETTO}</div><small>Area Comando · riservata</small><h2>${tit}</h2><p>${testo}</p>${extra}</div>`;
   const ammessi = () => AC.length ? `<div class="cmd-ammessi"><small>Accesso consentito a</small>${AC.map(p => `<span><img src="${esc(avatarAC(p))}" alt="" data-base="${esc(avatarBase(p.discordId))}">${esc(nomeAC(p))}<em>${esc(p.grado)}</em></span>`).join('')}</div>` : '';
 
@@ -1243,7 +1243,7 @@
   const ACC = { stato: DB_ATTIVO ? (LS.get('gu-acc', null)?.stato || 'ospite') : 'aperto', utente: null, riga: null };
   const accessoPieno = () => ['aperto', 'membro', 'comandante'].includes(ACC.stato);
   const puoVedere = v => accessoPieno() || VISTE_LIBERE.includes(v);
-  const ETICH = { ospite: ['Ospite', '#8a96b6'], esterno: ['Esterno', '#8a96b6'], in_verifica: ['In verifica', 'var(--giallo)'], rifiutato: ['Non verificato', 'var(--rosso)'], membro: ['Membro GU', 'var(--verde)'], comandante: ['Alto Comando', 'var(--oro)'] };
+  const ETICH = { ospite: ['Ospite', '#8a96b6'], esterno: ['Esterno', '#8a96b6'], in_verifica: ['In verifica', 'var(--giallo)'], rifiutato: ['Non verificato', 'var(--rosso)'], membro: ['Membro GU', 'var(--verde)'], comandante: ['Area Comando', 'var(--oro)'] };
   const GRADI_LISTA = FASCE.flatMap(([, , g]) => g.map(x => x[0])).reverse();
   const porta = $('#porta'), pbox = $('#porta-box'), chip = $('#account');
   let fileScreen = null;
