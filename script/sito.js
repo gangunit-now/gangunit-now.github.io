@@ -4,6 +4,26 @@
    ════════════════════════════════════════════════════════════════ */
 (() => {
   'use strict';
+  /* ═════════════ PROTEZIONI CONTRO LA COPIA ═════════════ */
+  // il sito funziona solo all'indirizzo ufficiale (o aperto dal PC per le prove)
+  const DOMINI = ['gangunit-now.github.io', 'localhost', '127.0.0.1'];
+  if (location.protocol !== 'file:' && !DOMINI.includes(location.hostname)) {
+    document.documentElement.innerHTML = '<head><meta charset="utf-8"><title>Copia non autorizzata</title></head><body style="margin:0;min-height:100vh;display:grid;place-items:center;background:#05070f;color:#e8edf8;font:600 18px system-ui,sans-serif;text-align:center;padding:20px"><div><h1 style="color:#ff4d5e;font-size:40px;margin:0 0 10px">Copia non autorizzata</h1><p>Questo sito appartiene alla Gang Unit · NOW V4.<br>Il sito ufficiale è <a style="color:#7cb0ff" href="https://gangunit-now.github.io/">gangunit-now.github.io</a></p></div></body>';
+    throw new Error('Copia non autorizzata');
+  }
+  // non si apre dentro altri siti
+  if (window.top !== window.self) { try { window.top.location.replace(window.self.location.href); } catch { document.documentElement.innerHTML = ''; } }
+  const inCampo = el => !!(el && el.closest && el.closest('input, textarea, select, [contenteditable="true"]'));
+  document.addEventListener('contextmenu', e => { if (!inCampo(e.target)) e.preventDefault(); });
+  document.addEventListener('dragstart', e => { if (!inCampo(e.target)) e.preventDefault(); });
+  document.addEventListener('copy', e => { if (!inCampo(document.activeElement)) e.preventDefault(); });
+  document.addEventListener('cut', e => { if (!inCampo(document.activeElement)) e.preventDefault(); });
+  window.addEventListener('keydown', e => {
+    const k = (e.key || '').toLowerCase(), c = e.ctrlKey || e.metaKey;
+    const vietato = k === 'f12' || (c && e.shiftKey && ['i', 'j', 'c', 'k'].includes(k)) || (c && ['u', 's', 'p'].includes(k)) || (c && ['c', 'x', 'a'].includes(k) && !inCampo(document.activeElement));
+    if (vietato) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
+  try { console.log('%cFermati!', 'color:#ff4d5e;font:900 44px sans-serif'); console.log('%cQuesto sito appartiene alla Gang Unit · NOW V4. Copiarlo, modificarlo o ripubblicarlo non è consentito.', 'font:600 15px sans-serif'); } catch {}
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const LS = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch { return d; } }, set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} } };
   const RIDOTTO = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -101,7 +121,7 @@
   }
   for (const c of ESAMI.capitoli) {
     const sez = document.getElementById(c.id); if (!sez) continue;
-    sez.insertAdjacentHTML('beforeend', `<a class="cap-esame rivela" href="#esame-${c.id}" data-esame="${c.id}"><span class="ce-i">🎯</span><span><b>Verifica del capitolo ${c.n}</b><small>${Math.min(c.domande, c.banca.length)} domande · ${c.minuti} minuti · soglia ${Math.round(ESAMI.sogliaCapitolo * 100)}%</small></span><span class="ce-v">Inizia →</span></a>`);
+    sez.insertAdjacentHTML('beforeend', `<a class="cap-esame rivela" href="#esame-${c.id}" data-esame="${c.id}"><span class="ce-i">🎯</span><span><b>Verifica del capitolo ${c.n}</b><small>${Math.min(c.domande, c.totale ?? c.banca.length)} domande · ${c.minuti} minuti · soglia ${Math.round(ESAMI.sogliaCapitolo * 100)}%</small></span><span class="ce-v">Inizia →</span></a>`);
   }
 
   /* ═════════════ INDICE ═════════════ */
@@ -371,7 +391,7 @@
   }
 
   /* ═════════════ NUMERI CHE CONTANO ═════════════ */
-  const totDomande = ESAMI.capitoli.reduce((a, c) => a + c.banca.length, 0);
+  const totDomande = ESAMI.capitoli.reduce((a, c) => a + (c.totale ?? c.banca.length), 0);
   $('#n-art').dataset.conta = ARTS.length; $('#n-cod').dataset.conta = CODICI.length; $('#n-dom').dataset.conta = totDomande;
   function conta(el) {
     const fin = +el.dataset.conta; if (RIDOTTO) { el.textContent = fin; return; }
@@ -539,8 +559,8 @@
         </details>
         <div class="bc-azioni">
           ${st === 'aperto' ? `<a class="btn p" href="#candidatura-${esc(b.id)}">${inv ? 'Rivedi la candidatura' : 'Candidati ora'} →</a>` : st === 'arrivo' ? `<button class="btn" type="button" disabled>Candidature dal ${dataIt(new Date(b.apertura))}</button>` : ''}
-          <button class="btn ghost" type="button" data-annuncio="${esc(b.id)}">📋 Copia annuncio per Discord</button>
-          <button class="btn ghost" type="button" data-link="${esc(b.id)}">🔗 Copia link</button>
+          ${ACC.stato === 'comandante' ? `<button class="btn ghost" type="button" data-annuncio="${esc(b.id)}">📋 Copia annuncio per Discord</button>
+          <button class="btn ghost" type="button" data-link="${esc(b.id)}">🔗 Copia link</button>` : ''}
         </div>
       </article>`;
     }).join('') : '<div class="vuoto" style="display:block">Al momento non ci sono bandi.</div>';
@@ -668,7 +688,7 @@
   function infoEsame(id) {
     if (id === 'finale') { const f = ESAMI.finale; return { id, titolo: f.titolo, sotto: f.sotto, n: totFinale(), minuti: f.minuti, soglia: f.soglia, finale: true }; }
     const c = ESAMI.capitoli.find(x => x.id === id); if (!c) return null;
-    return { id, titolo: `Verifica capitolo ${c.n}`, nome: c.titolo, sotto: c.sotto, n: Math.min(c.domande, c.banca.length), minuti: c.minuti, soglia: ESAMI.sogliaCapitolo, cap: c };
+    return { id, titolo: `Verifica capitolo ${c.n}`, nome: c.titolo, sotto: c.sotto, n: Math.min(c.domande, c.totale ?? c.banca.length), minuti: c.minuti, soglia: ESAMI.sogliaCapitolo, cap: c };
   }
   const iniziali = n => (n || '?').split(/\s+/).filter(Boolean).slice(0, 2).map(x => x[0].toUpperCase()).join('') || '?';
 
@@ -710,10 +730,27 @@
     $$('.cap-esame').forEach(a => { const e = E[a.dataset.esame]; a.classList.toggle('fatto', !!e?.superato); $('.ce-v', a).textContent = e ? (e.superato ? `✓ Superata · ${e.best}%` : `Record ${e.best}% · Riprova →`) : 'Inizia →'; });
   }
 
-  function introEsame(id) {
+  // le domande con le risposte stanno nell'archivio protetto: le leggono solo i membri verificati
+  let bancaPronta = ESAMI.capitoli.length > 0 && ESAMI.capitoli.every(c => c.banca && c.banca.length);
+  async function caricaBanca() {
+    if (bancaPronta) return true;
+    const sb = await db(); if (!sb) return false;
+    try {
+      const { data, error } = await sb.from('banca_esami').select('esame,domande');
+      if (error || !Array.isArray(data)) return false;
+      for (const r of data) { const c = ESAMI.capitoli.find(x => x.id === r.esame); if (c && Array.isArray(r.domande)) c.banca = r.domande; }
+      bancaPronta = ESAMI.capitoli.every(c => c.banca && c.banca.length);
+      return bancaPronta;
+    } catch { return false; }
+  }
+  async function introEsame(id) {
     const info = infoEsame(id);
     if (!info) { location.hash = 'esami'; return; }
     $('#esami-centro').hidden = true; const box = $('#esami-prova'); box.hidden = false;
+    if (!bancaPronta) {
+      box.innerHTML = '<div class="intro-esame"><p class="intro-s">Carico le domande…</p></div>';
+      if (!(await caricaBanca())) { box.innerHTML = `<div class="cmd-porta blocco"><div class="cmd-lucchetto">${LUCCHETTO}</div><small>Esami riservati</small><h2>Domande non disponibili</h2><p>Le domande d'esame si caricano solo per i membri verificati della Gang Unit. Accedi con Discord e riprova.</p><div class="esito-az" style="justify-content:center"><a class="btn ghost" href="#esami">Centro esami</a></div></div>`; return; }
+    }
     const c = candidato(), e = esiti()[id];
     const tipi = new Set((info.finale ? ESAMI.capitoli.flatMap(x => x.banca) : info.cap.banca).map(d => d.t));
     box.innerHTML = `<div class="intro-esame">
@@ -1266,6 +1303,7 @@
     const nc = $('.nav-cmd'); if (nc) nc.hidden = !(ACC.stato === 'comandante' || ACC.stato === 'aperto');
     renderChip();
     if (DB_ATTIVO) LS.set('gu-acc', { stato: ACC.stato });
+    if (vista === 'bandi' && $('#candidatura').hidden) renderBandi();
     if (vista && !puoVedere(vista)) vai();
     else if (vista === 'bloccato') vai();
   }

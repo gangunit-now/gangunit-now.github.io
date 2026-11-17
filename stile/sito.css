@@ -1043,6 +1043,11 @@ html.porta-su,html.porta-su body{overflow:hidden}
 .cmd-gestisci{grid-template-columns:190px 1fr 1fr auto}
 @media (max-width:900px){.cmd-gestisci{grid-template-columns:1fr}}
 
+/* protezione: niente selezione del testo e niente trascinamento delle immagini */
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select,[contenteditable="true"]{-webkit-user-select:text;user-select:text}
+img{-webkit-user-drag:none;user-drag:none}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*:before,*:after{animation:none!important;transition:none!important}
