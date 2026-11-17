@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gang Unit · NOW V4</title>
+<meta name="description" content="Regolamento, strumenti, bandi ed esami della Gang Unit del Los Santos Police Department · NOW V4 Roleplay.">
+<meta name="theme-color" content="#05070f">
+<meta property="og:title" content="Gang Unit · NOW V4">
+<meta property="og:description" content="Regolamento, codici radio, moduli, bandi di reclutamento ed esami della Gang Unit.">
+<meta property="og:image" content="immagini/banner.jpg">
+<link rel="icon" href="immagini/icona.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="stile/sito.css">
+</head>
+<body data-minaccia="verde">
+<script>document.documentElement.classList.add('js')</script>
+<a class="salta" href="#contenuto-principale">Vai al contenuto</a>
+
+<!-- ═════════ BARRA IN ALTO ═════════ -->
+<header class="barra" id="barra">
+  <div class="in">
+    <a class="marchio" href="#home"><img src="immagini/distintivo.jpg" alt="Distintivo Gang Unit NOW V4" width="44" height="44"><div><b>Gang Unit</b><small>NOW V4 · LSPD</small></div></a>
+    <div class="menu" id="menu">
+      <nav class="nav" aria-label="Sezioni del sito">
+        <a href="#home" data-v="home">Home</a>
+        <a href="#regolamento" data-v="regolamento">Regolamento</a>
+        <a href="#strumenti" data-v="strumenti">Strumenti</a>
+        <a href="#bandi" data-v="bandi">Bandi<span class="nav-num" id="nav-bandi" hidden></span></a>
+        <a href="#esami" data-v="esami">Esami</a>
+        <a href="#comando" data-v="comando" class="nav-cmd"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Comando</a>
+      </nav>
+      <label class="cerca" for="q">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Cerca nel regolamento… (premi /)" autocomplete="off" aria-label="Cerca nel regolamento">
+        <span class="esito" id="esito"></span>
+      </label>
+    </div>
+    <button class="account" id="account" type="button" hidden></button>
+    <button class="menu-btn" id="menu-btn" type="button" aria-controls="menu" aria-expanded="false" aria-label="Apri il menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="sirena-linea" aria-hidden="true"></div>
+  <div class="avanz" id="avanz"></div>
+</header>
+
+<main id="contenuto-principale">
+
+<!-- ═════════════════════════ HOME ═════════════════════════ -->
+<section class="vista" id="v-home" data-vista="home" aria-label="Home">
+  <div class="hero">
+    <img class="hero-bg" src="immagini/banner.jpg" alt="Banner Gang Unit NOW V4">
+    <canvas id="scintille" aria-hidden="true"></canvas>
+    <div class="lampeggianti" aria-hidden="true"><i class="lb"></i><i class="lr"></i></div>
+    <div class="scan" aria-hidden="true"></div>
+    <div class="hero-tag"><span class="chip rosso"><i></i>Uso interno</span><span class="chip"><i></i>Lettura obbligatoria</span><span class="chip blu"><i></i>7 capitoli · appendice · 8 esami</span></div>
+  </div>
+
+  <div class="wrap">
+    <div class="scheda rivela">
+      <div class="titolo-doc">
+        <div class="td-testo">
+          <div class="codice">DOC. GU-NOW-001 · REV. 1.0 · LOS SANTOS POLICE DEPARTMENT</div>
+          <h1 class="titolone"><span>Regolamento</span><span>Gang Unit</span></h1>
+          <div class="sotto">Struttura · Procedure · Codici · Disciplina</div>
+          <p>Il manuale operativo della Gang Unit del Los Santos Police Department. Stabilisce chi siamo, come siamo organizzati, come si opera contro le organizzazioni criminali di Los Santos e come si documenta ogni intervento. Ogni agente, dalla Recluta al Comandante, è tenuto a conoscerlo e rispettarlo.</p>
+          <div class="azioni">
+            <a class="btn p" href="#cap-1">Inizia a leggere <span aria-hidden="true">→</span></a>
+            <a class="btn" href="#esami">Centro esami</a>
+            <a class="btn ghost" href="#bandi" id="cta-bandi">Bandi aperti</a>
+          </div>
+        </div>
+        <div class="tilt" id="tilt"><div class="tilt-in"><img src="immagini/distintivo.jpg" alt="Distintivo Gang Unit NOW V4"><span class="riflesso"></span></div><div class="alone" aria-hidden="true"></div></div>
+        <div class="timbro" aria-hidden="true">Riservato<small>Solo personale GU</small></div>
+      </div>
+      <div class="dati">
+        <div class="anello"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="a-bg"/><circle cx="60" cy="60" r="52" class="a-fg" id="anello"/></svg><div><b id="letti-n">0</b><span id="letti-t">di 0 articoli letti</span></div></div>
+        <dl>
+          <div><dt>Revisione</dt><dd>1.0</dd></div>
+          <div><dt>In vigore dal</dt><dd>12/11/2026</dd></div>
+          <div><dt>Destinatari</dt><dd>Tutto il personale GU</dd></div>
+          <div><dt>Approvato da</dt><dd>Alto Comando</dd></div>
+          <div><dt>Classificazione</dt><dd>Riservato · uso interno</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    <div class="numeri rivela">
+      <div><b data-conta="11">11</b><span>Gradi</span></div>
+      <div><b data-conta="4">4</b><span>Fasce di comando</span></div>
+      <div><b id="n-art">0</b><span>Articoli</span></div>
+      <div><b id="n-cod">0</b><span>Codici radio</span></div>
+      <div><b id="n-dom">0</b><span>Domande d'esame</span></div>
+    </div>
+
+    <div class="bando-evidenza" id="bando-evidenza" hidden></div>
+
+    <div class="sez-testa rivela"><small>Accesso rapido</small><h2>Tutto quello che serve in servizio</h2></div>
+    <div class="categorie">
+      <a class="cat rivela" href="#regolamento" style="--c:#3b82f6"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 19.5V4.5M8 7h8M8 11h6"/></svg></span><b>Regolamento</b><span>7 capitoli e appendice, con ricerca e progressi di lettura</span></a>
+      <a class="cat rivela" href="#art-2-1" style="--c:#f5b942"><span class="ico"><svg viewBox="0 0 24 24"><path d="m12 3 2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.4l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/></svg></span><b>Gerarchia</b><span>11 gradi, 4 fasce, chi comanda e chi risponde</span></a>
+      <a class="cat rivela" href="#strumenti-radio" style="--c:#7cb0ff"><span class="ico"><svg viewBox="0 0 24 24"><rect x="6" y="8" width="12" height="14" rx="2"/><path d="M9 8V2M10 13h4M10 17h4"/></svg></span><b>Codici radio</b><span>Cerca un codice e allenati con le carte</span></a>
+      <a class="cat rivela" href="#strumenti-prontuario" style="--c:#ff4d5e"><span class="ico"><svg viewBox="0 0 24 24"><path d="M9 4h6v3H9zM7 5H5v17h14V5h-2"/><path d="m8.5 13 2.2 2.2L15.5 10.5"/></svg></span><b>Prontuario</b><span>Checklist passo per passo per ogni intervento</span></a>
+      <a class="cat rivela" href="#strumenti-moduli" style="--c:#2fd38a"><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 2H6v20h12V6z"/><path d="M14 2v4h4M9 12h6M9 16h6"/></svg></span><b>Moduli e rapporti</b><span>Compili i campi, il sito prepara il testo per Discord</span></a>
+      <a class="cat rivela" href="#strumenti-carriera" style="--c:#a78bfa"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 20h4v-6H4zM10 20h4V9h-4zM16 20h4V4h-4z"/></svg></span><b>Carriera</b><span>Dalla Recluta al Comandante: tempi e requisiti</span></a>
+      <a class="cat rivela" href="#bandi" style="--c:#ffc94a"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15 8a5 5 0 0 1 0 8M18 5a9 9 0 0 1 0 14"/></svg></span><b>Bandi</b><span>Posti aperti e candidature che arrivano su Discord</span></a>
+      <a class="cat rivela" href="#esami" style="--c:#ff9f43"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5z"/><path d="M6 10.5V16c3 2.5 9 2.5 12 0v-5.5M22 8v6"/></svg></span><b>Esami</b><span>7 verifiche di capitolo e l'esame d'accademia</span></a>
+      <a class="cat rivela" href="#strumenti-faq" style="--c:#22d3ee"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M9.5 9.2a2.6 2.6 0 0 1 5 .8c0 1.8-2.5 2.2-2.5 4M12 17.5v.01"/></svg></span><b>Domande frequenti</b><span>Le risposte rapide ai dubbi più comuni</span></a>
+    </div>
+
+    <div class="sez-testa rivela"><small>Il regolamento</small><h2>Capitoli</h2></div>
+    <div class="capi-zona">
+      <nav class="capi-a" aria-label="Capitoli">
+        <a class="cap-a rivela" href="#cap-1" data-cap="cap-1" style="--c:#3b82f6"><span class="gigante" aria-hidden="true">I</span><span class="freccia" aria-hidden="true">→</span><small>Capitolo I · <span class="n-art"></span></small><b>La Gang Unit</b><p>Missione, valori e codice di condotta</p><div class="piede"><span class="stato">da leggere</span><span class="barretta"><i></i></span></div></a>
+        <a class="cap-a rivela" href="#cap-2" data-cap="cap-2" style="--c:#f5b942"><span class="gigante" aria-hidden="true">II</span><span class="freccia" aria-hidden="true">→</span><small>Capitolo II · <span class="n-art"></span></small><b>Gerarchia</b><p>Gradi, catena di comando, promozioni</p><div class="piede"><span class="stato">da leggere</span><span class="barretta"><i></i></span></div></a>
+        <a class="cap-a rivela" href="#cap-3" data-cap="cap-3" style="--c:#22d3ee"><span class="gigante" aria-hidden="true">III</span><span class="freccia" aria-hidden="true">→</span><small>Capitolo III · <span class="n-art"></span></small><b>Ambito operativo</b><p>Gang, intelligence e livelli di minaccia</p><div class="piede"><span class="stato">da leggere</span><span class="barretta"><i></i></span></div></a>
+        <a class="cap-a rivela" href="#cap-4" data-cap="cap-4" style="--c:#ff4d5e"><span class="gigante" aria-hidden="true">IV</span><span class="freccia" aria-hidden="true">→</span><small>Capitolo IV · <span class="n-art"></span></small><b>Procedure</b><p>Forza, fermo, arresto, raid e inseguimenti</p><div class="piede"><span class="stato">da leggere</span><span class="barretta"><i></i></span></div></a>
+        <a class="cap-a rivela" href="#cap-5" data-cap="cap-5" style="--c:#2fd38a"><span class="gigante" aria-hidden="true">V</span><span class="freccia" aria-hidden="true">→</span><small>Capitolo V · <span class="n-art"></span></small><b>Comunicazioni</b><p>Radio, codici e coordinamento</p><div class="piede"><span class="stato">da leggere</span><span class="barretta"><i></i></span></div></a>
+        <a class="cap-a rivela" href="#cap-6" data-cap="cap-6" style="--c:#ff9f43"><span class="gigante" aria-hidden="true">VI</span><span class="freccia" aria-hidden="true">→</span><small>Capitolo VI · <span class="n-art"></span></small><b>Disciplina</b><p>Violazioni e provvedimenti</p><div class="piede"><span class="stato">da leggere</span><span class="barretta"><i></i></span></div></a>
+        <a class="cap-a rivela" href="#cap-7" data-cap="cap-7" style="--c:#a78bfa"><span class="gigante" aria-hidden="true">VII</span><span class="freccia" aria-hidden="true">→</span><small>Capitolo VII · <span class="n-art"></span></small><b>Documentazione</b><p>Rapporti e moduli da copiare</p><div class="piede"><span class="stato">da leggere</span><span class="barretta"><i></i></span></div></a>
+        <a class="cap-a rivela" href="#app-a" data-cap="app-a" style="--c:#7cb0ff"><span class="gigante" aria-hidden="true">A</span><span class="freccia" aria-hidden="true">→</span><small>Appendice · <span class="n-art"></span></small><b>Appendice</b><p>Glossario, modifiche, approvazione</p><div class="piede"><span class="stato">da leggere</span><span class="barretta"><i></i></span></div></a>
+        <a class="cap-a esa rivela" href="#esami"><span class="gigante" aria-hidden="true">★</span><span class="freccia" aria-hidden="true">→</span><small>8 esami · attestato</small><b>Esami</b><p>Sei pronto per la GU? Mettiti alla prova</p><div class="piede"><span class="stato" id="capi-esami">7 verifiche e l'esame finale</span></div></a>
+      </nav>
+      <aside class="alto-comando rivela" id="alto-comando" aria-label="Alto Comando">
+        <div class="ac-testa"><small>★ Alto Comando</small><h3>Chi guida la Gang Unit</h3></div>
+        <div id="ac-lista"></div>
+        <p class="ac-nota">Per segnalare un comportamento scorretto di un superiore: ticket <b>Affari Interni</b> (<a href="#art-2-2">art. 2.2</a>).</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ REGOLAMENTO ═════════════════════════ -->
+<section class="vista" id="v-regolamento" data-vista="regolamento" aria-label="Regolamento" hidden>
+  <div class="wrap">
+    <div class="pagina-testa">
+      <div><small>DOC. GU-NOW-001 · REV. 1.0</small><h1>Regolamento <span>Gang Unit</span></h1><p>Tocca <b>Segna come letto</b> alla fine di ogni articolo: i progressi restano salvati su questo dispositivo. Alla fine di ogni capitolo trovi la sua verifica.</p></div>
+      <div class="pt-anello"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="a-bg"/><circle cx="60" cy="60" r="52" class="a-fg" id="anello2"/></svg><div><b id="letti-n2">0%</b><span>letto</span></div></div>
+    </div>
+  </div>
+  <div class="corpo">
+    <aside class="indice" id="indice" aria-label="Indice">
+      <h4>Indice</h4>
+      <ol id="toc"></ol>
+    </aside>
+    <div class="contenuto" id="contenuto">
+<!-- ═════════ CAPITOLO I ═════════ -->
+<section class="capitolo" id="cap-1" data-r="I" data-t="La Gang Unit">
+  <div class="cap-testa"><span class="num">I</span><div><small>Capitolo primo</small><h2>La Gang Unit</h2></div></div>
+
+  <article class="art" id="art-1-1" data-t="Presentazione">
+    <h3><span class="ref">ART. 1.1</span>Presentazione</h3>
+    <p>La Gang Unit (GU) è un'unità specializzata del Los Santos Police Department. Si occupa della criminalità organizzata di strada: gang, cartelli, traffici di armi e stupefacenti, controllo dei territori e violenza tra fazioni.</p>
+    <p>La GU lavora dove la pattuglia ordinaria non basta. Raccoglie informazioni, conosce volti, colori e territori delle organizzazioni attive in città e interviene con operazioni mirate, pianificate e documentate.</p>
+  </article>
+
+  <article class="art" id="art-1-2" data-t="Missione">
+    <h3><span class="ref">ART. 1.2</span>Missione</h3>
+    <ul>
+      <li><b>Conoscere</b>: mappare gang, membri, alleanze e territori di Los Santos.</li>
+      <li><b>Prevenire</b>: fermare faide, regolamenti di conti e traffici prima che degenerino.</li>
+      <li><b>Colpire</b>: smantellare le strutture criminali con operazioni autorizzate e proporzionate.</li>
+      <li><b>Proteggere</b>: restituire i quartieri ai cittadini e guadagnarne la fiducia.</li>
+    </ul>
+  </article>
+
+  <article class="art" id="art-1-3" data-t="Valori">
+    <h3><span class="ref">ART. 1.3</span>Valori</h3>
+    <ul>
+      <li><b>Integrità</b>: chi combatte la corruzione non può esserne toccato. Nessun accordo, favore o regalo da membri di organizzazioni criminali.</li>
+      <li><b>Disciplina</b>: si opera secondo gli ordini ricevuti e secondo questo regolamento, anche quando nessuno guarda.</li>
+      <li><b>Riservatezza</b>: ciò che la GU sa resta nella GU. Un'informazione trapelata può costare un'operazione o la vita di un collega.</li>
+      <li><b>Lealtà</b>: verso i colleghi, verso l'unità e, prima di tutto, verso la legge.</li>
+      <li><b>Sangue freddo</b>: le provocazioni fanno parte del lavoro. Si risponde con professionalità.</li>
+    </ul>
+    <div class="box nota"><b class="e">NOTA</b><p>Il distintivo della Gang Unit dà accesso a informazioni e situazioni delicate. Chi lo indossa rappresenta l'intera unità, in servizio e fuori.</p></div>
+  </article>
+
+  <article class="art" id="art-1-4" data-t="Codice di condotta">
+    <h3><span class="ref">ART. 1.4</span>Codice di condotta</h3>
+    <h4>Sempre</h4>
+    <ul>
+      <li>Timbrare l'entrata e l'uscita dal servizio con il pannello del bot.</li>
+      <li>Identificarsi come agente di polizia quando si interviene, salvo operazioni sotto copertura autorizzate.</li>
+      <li>Rispettare cittadini, fermati, avvocati e colleghi di ogni reparto.</li>
+      <li>Segnalare all'Alto Comando ogni contatto non operativo con membri di gang.</li>
+    </ul>
+    <h4>Mai</h4>
+    <ul>
+      <li>Usare informazioni della GU per scopi personali o passarle a terzi.</li>
+      <li>Prendere parte a qualsiasi attività illegale, anche "per copertura", senza autorizzazione scritta.</li>
+      <li>Provocare, umiliare o insultare soggetti fermati o arrestati.</li>
+      <li>Fare metagaming: usare in gioco informazioni ottenute fuori dal gioco (Discord, live, chat).</li>
+    </ul>
+    <div class="box vietato"><b class="e">VIETATO</b><p>Far parte, anche con un altro personaggio, di una gang o di un'organizzazione criminale contrastata dalla GU. La violazione comporta l'espulsione immediata.</p></div>
+  </article>
+</section>
+
+<!-- ═════════ CAPITOLO II ═════════ -->
+<section class="capitolo" id="cap-2" data-r="II" data-t="Gerarchia">
+  <div class="cap-testa"><span class="num">II</span><div><small>Capitolo secondo</small><h2>Struttura gerarchica</h2></div></div>
+
+  <article class="art" id="art-2-1" data-t="Gradi e fasce">
+    <h3><span class="ref">ART. 2.1</span>Gradi e fasce</h3>
+    <p>La Gang Unit si divide in quattro fasce. Il grado determina chi impartisce gli ordini, chi può usare i comandi del bot e chi risponde di un intervento.</p>
+    <div class="piramide" id="piramide"></div>
+  </article>
+
+  <article class="art" id="art-2-2" data-t="Catena di comando">
+    <h3><span class="ref">ART. 2.2</span>Catena di comando</h3>
+    <ul>
+      <li>Gli ordini scendono un livello alla volta. Le segnalazioni salgono allo stesso modo.</li>
+      <li>Sul campo decide il <b>responsabile dell'intervento</b>: il grado più alto presente, oppure chi è stato nominato dalla centrale.</li>
+      <li>Saltare la catena di comando è ammesso solo per segnalare un comportamento scorretto di un superiore, aprendo un ticket <b>Affari Interni</b>.</li>
+    </ul>
+    <div class="box obbligo"><b class="e">OBBLIGO</b><p>Un ordine palesemente illegittimo non va eseguito. Va rifiutato con calma e segnalato all'Alto Comando appena possibile.</p></div>
+  </article>
+
+  <article class="art" id="art-2-3" data-t="Permessi sul bot">
+    <h3><span class="ref">ART. 2.3</span>Permessi sul bot</h3>
+    <p>Il bot Discord della Gang Unit applica la gerarchia in automatico. Il grado minimo per ogni gruppo di comandi è:</p>
+    <div class="tab"><table>
+      <thead><tr><th>Area</th><th>Comandi</th><th>Da</th></tr></thead>
+      <tbody>
+        <tr><td>Gestione personale</td><td><kbd>/agente</kbd> <kbd>/promuovi</kbd> <kbd>/retrocedi</kbd> <kbd>/ferie</kbd></td><td>Tenente I</td></tr>
+        <tr><td>Comunicazioni ufficiali</td><td><kbd>/comunicazione</kbd> <kbd>/email</kbd></td><td>Tenente I</td></tr>
+        <tr><td>Disciplina</td><td><kbd>/richiamo</kbd> <kbd>/convocazione</kbd></td><td>Sergente I</td></tr>
+        <tr><td>Accademia</td><td><kbd>/esame</kbd> <kbd>/valutazione</kbd></td><td>Sergente I</td></tr>
+        <tr><td>Registri e rapporti</td><td><kbd>/rapporto</kbd> <kbd>/trattenuto</kbd> <kbd>/arma</kbd></td><td>Recluta</td></tr>
+      </tbody>
+    </table></div>
+  </article>
+
+  <article class="art" id="art-2-4" data-t="Promozioni">
+    <h3><span class="ref">ART. 2.4</span>Promozioni</h3>
+    <p>Le promozioni premiano presenza, affidabilità e qualità dei rapporti. Il tempo minimo nel grado è una soglia, non un diritto.</p>
+    <div class="tab"><table>
+      <thead><tr><th>Passaggio</th><th>Tempo minimo</th><th>Requisiti</th></tr></thead>
+      <tbody>
+        <tr><td>Recluta → Agente I</td><td>1 settimana</td><td>Esame d'accademia superato, almeno 3 valutazioni positive</td></tr>
+        <tr><td>Agente I → Agente II</td><td>2 settimane</td><td>15 ore di servizio, nessun richiamo attivo</td></tr>
+        <tr><td>Agente II → Agente III</td><td>3 settimane</td><td>30 ore di servizio, partecipazione ad almeno un raid</td></tr>
+        <tr><td>Agente III → Sergente I</td><td>4 settimane</td><td>Proposta di un Ufficiale, colloquio con l'Alto Comando</td></tr>
+        <tr><td>Supervisori e Ufficiali</td><td>A discrezione</td><td>Decisione dell'Alto Comando</td></tr>
+      </tbody>
+    </table></div>
+    <div class="box nota"><b class="e">NOTA</b><p>Le ore si contano dalla timbratura del bot (<kbd>/ore</kbd>). Un turno non timbrato non esiste.</p></div>
+  </article>
+</section>
+
+<!-- ═════════ CAPITOLO III ═════════ -->
+<section class="capitolo" id="cap-3" data-r="III" data-t="Ambito operativo">
+  <div class="cap-testa"><span class="num">III</span><div><small>Capitolo terzo</small><h2>Ambito operativo</h2></div></div>
+
+  <article class="art" id="art-3-1" data-t="Competenze della GU">
+    <h3><span class="ref">ART. 3.1</span>Competenze della GU</h3>
+    <p>La Gang Unit interviene con priorità su:</p>
+    <ul>
+      <li>sparatorie e scontri tra gang (10-71 con più soggetti armati);</li>
+      <li>traffico e spaccio di stupefacenti organizzato;</li>
+      <li>traffico di armi e matricole abrase;</li>
+      <li>rapine compiute da gruppi organizzati;</li>
+      <li>estorsioni, "pizzo" e controllo dei territori;</li>
+      <li>covi, laboratori e magazzini delle organizzazioni.</li>
+    </ul>
+    <p>Per gli altri reati la GU interviene come una normale pattuglia, poi passa la scena al reparto competente se serve.</p>
+  </article>
+
+  <article class="art" id="art-3-2" data-t="Livelli di minaccia">
+    <h3><span class="ref">ART. 3.2</span>Livelli di minaccia</h3>
+    <p>La centrale dichiara un livello di minaccia per la città. Il livello decide quante unità escono insieme e con quale equipaggiamento. Tocca un livello per vedere come cambia la pagina.</p>
+    <div class="livelli">
+      <button type="button" class="livello" data-l="verde" style="--c:var(--verde)"><b><i></i>Verde</b><p>Situazione ordinaria. Pattuglie da 2 agenti, giubbotto leggero, controlli a campione nei territori.</p></button>
+      <button type="button" class="livello" data-l="giallo" style="--c:var(--giallo)"><b><i></i>Giallo</b><p>Tensione tra gang o sparatoria recente. Minimo 2 pattuglie in zona, giubbotto pesante, niente agenti da soli.</p></button>
+      <button type="button" class="livello" data-l="rosso" style="--c:var(--rosso)"><b><i></i>Rosso</b><p>Faida aperta. Tutte le unità disponibili, armi lunghe autorizzate, nessuna Recluta nei territori ostili.</p></button>
+    </div>
+    <div class="box radio"><b class="e">RADIO</b><p>«Centrale a tutte le unità GU: livello di minaccia GIALLO su Grove Street e dintorni.»</p></div>
+  </article>
+
+  <article class="art" id="art-3-3" data-t="Classificazione delle gang">
+    <h3><span class="ref">ART. 3.3</span>Classificazione delle gang</h3>
+    <div class="tab"><table>
+      <thead><tr><th>Classe</th><th>Descrizione</th><th>Approccio</th></tr></thead>
+      <tbody>
+        <tr><td class="sig">CLASSE C</td><td>Gruppo di strada, pochi membri, piccolo spaccio e vandalismo.</td><td>Controlli e fermi ordinari.</td></tr>
+        <tr><td class="sig">CLASSE B</td><td>Gang strutturata con territorio, armi e traffici stabili.</td><td>Schedatura completa, operazioni autorizzate da un Tenente.</td></tr>
+        <tr><td class="sig">CLASSE A</td><td>Organizzazione pesante: cartello, mafia, gruppi con armi automatiche.</td><td>Solo operazioni pianificate e autorizzate dal Capitano o dall'Alto Comando.</td></tr>
+      </tbody>
+    </table></div>
+  </article>
+
+  <article class="art" id="art-3-4" data-t="Intelligence e schedatura">
+    <h3><span class="ref">ART. 3.4</span>Intelligence e schedatura</h3>
+    <ul>
+      <li>Ogni gang ha una <b>scheda</b> con nome, colori, territorio, capi conosciuti, membri, veicoli e precedenti (modulo all'<a href="#art-7-3">art. 7.3</a>).</li>
+      <li>Le schede si aggiornano dopo ogni arresto o operazione che riguarda quella gang.</li>
+      <li>Gli informatori sono gestiti solo da Supervisori in su e la loro identità resta riservata all'Alto Comando.</li>
+      <li>I ricercati legati a gang si pubblicano con <kbd>/ricercato</kbd> e compaiono anche sul sito pubblico.</li>
+    </ul>
+    <div class="box vietato"><b class="e">VIETATO</b><p>Mostrare o descrivere le schede gang a persone esterne alla GU, compresi agenti di altri reparti senza autorizzazione.</p></div>
+  </article>
+
+  <article class="art" id="art-3-5" data-t="Uniforme e veicoli">
+    <h3><span class="ref">ART. 3.5</span>Uniforme e veicoli</h3>
+    <ul>
+      <li><b>Uniforme operativa</b>: tenuta tattica scura con giubbotto e scritta POLICE · GANG UNIT ben visibile.</li>
+      <li><b>Borghese</b>: ammesso solo per servizi di osservazione autorizzati, con distintivo sempre addosso.</li>
+      <li><b>Veicoli</b>: civetta (unmarked) con lampeggianti nascosti. I veicoli con livrea si usano in livello Rosso o a supporto.</li>
+      <li>Ogni veicolo va lasciato in deposito a fine turno, rifornito e senza danni non segnalati.</li>
+    </ul>
+  </article>
+</section>
+
+<!-- ═════════ CAPITOLO IV ═════════ -->
+<section class="capitolo" id="cap-4" data-r="IV" data-t="Procedure operative">
+  <div class="cap-testa"><span class="num">IV</span><div><small>Capitolo quarto</small><h2>Procedure operative</h2></div></div>
+
+  <article class="art" id="art-4-1" data-t="Uso della forza">
+    <h3><span class="ref">ART. 4.1</span>Uso della forza</h3>
+    <p>La forza è ammessa solo se <b>necessaria</b>, <b>proporzionata</b> e <b>ragionevole</b> rispetto alla minaccia. Si sale di livello solo quando il precedente non basta.</p>
+    <div class="scala">
+      <div style="--c:#9fb8ff"><b>1</b><span>Presenza</span><small>Divisa, distintivo, posizionamento</small></div>
+      <div style="--c:#7fd0ff"><b>2</b><span>Comandi verbali</span><small>Ordini chiari, ripetuti</small></div>
+      <div style="--c:var(--giallo)"><b>3</b><span>Controllo fisico</span><small>Immobilizzazione, manette</small></div>
+      <div style="--c:#ff9f43"><b>4</b><span>Non letale</span><small>Taser, manganello</small></div>
+      <div style="--c:var(--rosso)"><b>5</b><span>Forza letale</span><small>Solo con vita in pericolo</small></div>
+    </div>
+    <div class="box vietato"><b class="e">VIETATO</b><p>Sparare a un soggetto che fugge disarmato, colpire una persona già ammanettata, aprire il fuoco per primi senza una minaccia armata reale.</p></div>
+    <div class="box obbligo"><b class="e">OBBLIGO</b><p>Ogni uso di forza dal livello 4 in su va scritto nel rapporto, con motivo e testimoni.</p></div>
+  </article>
+
+  <article class="art" id="art-4-2" data-t="Fermo">
+    <h3><span class="ref">ART. 4.2</span>Fermo</h3>
+    <p>Il fermo limita per poco tempo la libertà di una persona per identificarla o fare accertamenti. Non è un arresto.</p>
+    <ul>
+      <li>Si comunica il motivo del fermo e si chiede il documento.</li>
+      <li>Se la persona accetta la perquisizione, si trasporta senza manette. Se rifiuta, si trasporta ammanettata in centrale per gli accertamenti.</li>
+      <li>Un fermato non va mai messo in cella.</li>
+      <li>Il fermo dura il tempo degli accertamenti: finiti quelli, si rilascia o si procede con l'arresto.</li>
+    </ul>
+  </article>
+
+  <article class="art" id="art-4-3" data-t="Arresto e diritti Miranda">
+    <h3><span class="ref">ART. 4.3</span>Arresto e diritti Miranda</h3>
+    <ol>
+      <li>Si mette in sicurezza il soggetto e lo si ammanetta.</li>
+      <li>Si comunica lo stato di arresto e il motivo.</li>
+      <li>Si leggono i diritti Miranda (sotto). Se il soggetto non risponde, si ripetono fino a tre volte, poi si procede.</li>
+      <li>Prima perquisizione sul posto per armi e oggetti pericolosi.</li>
+      <li>Trasporto in centrale e seconda perquisizione completa, con sequestro.</li>
+      <li>Rapporto d'arresto entro la fine del turno (<a href="#art-7-1">art. 7.1</a>).</li>
+    </ol>
+    <div class="modulo"><div class="mh"><b>Diritti Miranda</b><button class="copia" type="button">Copia</button></div><pre>Lei è in stato di arresto. Ha il diritto di rimanere in silenzio.
+Qualsiasi cosa dirà potrà essere usata contro di lei in tribunale.
+Ha diritto a un avvocato; se non può permetterselo, gliene sarà assegnato uno d'ufficio.
+Ha diritto a cure mediche e a un pasto. Ha compreso i suoi diritti?</pre></div>
+  </article>
+
+  <article class="art" id="art-4-4" data-t="Perquisizioni">
+    <h3><span class="ref">ART. 4.4</span>Perquisizioni</h3>
+    <ul>
+      <li>Prima di perquisire si chiede sempre: «Ha armi o oggetti che possono ferirmi?»</li>
+      <li>Su soggetti di sesso opposto si perquisisce con bodycam attiva e un collega come testimone.</li>
+      <li>I membri noti di gang Classe A e B si considerano sempre potenzialmente armati.</li>
+      <li>La perquisizione di un veicolo o di un'abitazione senza consenso richiede flagranza o mandato.</li>
+    </ul>
+  </article>
+
+  <article class="art" id="art-4-5" data-t="Traffic stop e felony stop">
+    <h3><span class="ref">ART. 4.5</span>Traffic stop e felony stop</h3>
+    <h4>10-55 · Traffic stop</h4>
+    <ol>
+      <li>Comunicare in radio targa, modello e posizione.</li>
+      <li>Fermare il veicolo in un punto sicuro, con la volante leggermente sfalsata.</li>
+      <li>Avvicinarsi dal lato guida, con il collega in copertura dal lato passeggero.</li>
+      <li>Chiedere documenti e motivo del viaggio. Il veicolo si controlla solo con consenso o fondato sospetto.</li>
+    </ol>
+    <h4>Felony stop · veicolo ad alto rischio</h4>
+    <p>Si usa per veicoli rubati, legati a sparatorie o con membri armati a bordo. Armi puntate da dietro le portiere, ordini dati da <b>un solo agente</b>, soggetti fatti uscire uno alla volta, a mani alzate e camminando all'indietro.</p>
+  </article>
+
+  <article class="art" id="art-4-6" data-t="10-80 Inseguimento">
+    <h3><span class="ref">ART. 4.6</span>10-80 · Inseguimento</h3>
+    <ul>
+      <li>Massimo 3 unità all'inseguimento più un'unità aerea, se disponibile. Le altre si posizionano sui possibili percorsi.</li>
+      <li>Prima di qualsiasi manovra si danno tre ALT chiari, a voce o con il megafono.</li>
+      <li>PIT o box solo sotto i 150 km/h e lontano da pedoni.</li>
+      <li>Fuoco alle ruote solo se il conducente ha già messo in pericolo vite, e con l'ok del responsabile.</li>
+    </ul>
+    <div class="box radio"><b class="e">RADIO</b><p>Chi guida l'inseguimento comunica in continuo direzione, strada e velocità. Gli altri restano in silenzio.</p></div>
+  </article>
+
+  <article class="art" id="art-4-7" data-t="Scontro tra gang">
+    <h3><span class="ref">ART. 4.7</span>Scontro tra gang · 10-71</h3>
+    <ol>
+      <li>La prima unità sul posto <b>non entra</b>: si ferma a distanza di sicurezza e comunica numero di soggetti, armi e via di fuga.</li>
+      <li>La centrale alza il livello di minaccia almeno a Giallo.</li>
+      <li>Si entra solo con almeno 4 agenti e un responsabile nominato.</li>
+      <li>Si mette in sicurezza l'area, si soccorrono i feriti (chiamando l'EMS) e si fermano tutti i presenti armati.</li>
+      <li>Bossoli e armi si repertano e si registrano con <kbd>/arma sequestra</kbd>.</li>
+    </ol>
+  </article>
+
+  <article class="art" id="art-4-8" data-t="Raid e irruzioni">
+    <h3><span class="ref">ART. 4.8</span>Raid e irruzioni</h3>
+    <p>Un raid è un'irruzione pianificata in un covo, laboratorio o magazzino.</p>
+    <ul>
+      <li>Serve un'autorizzazione del <b>Capitano</b> in su, oppure un mandato della Procura.</li>
+      <li>Briefing obbligatorio prima dell'uscita: obiettivo, ingressi, ruoli, piano di ritirata, frequenza radio.</li>
+      <li>Squadra minima: 4 agenti più il responsabile. Le Reclute non partecipano.</li>
+      <li>Al termine: debriefing e rapporto d'operazione entro 24 ore (<a href="#art-7-2">art. 7.2</a>).</li>
+    </ul>
+    <div class="box vietato"><b class="e">VIETATO</b><p>Organizzare un raid "al volo" senza autorizzazione, anche se l'occasione sembra buona.</p></div>
+  </article>
+
+  <article class="art" id="art-4-9" data-t="Rapine e ostaggi">
+    <h3><span class="ref">ART. 4.9</span>Rapine e ostaggi</h3>
+    <ul>
+      <li>La vita dell'ostaggio viene prima di tutto, compreso l'arresto dei rapinatori.</li>
+      <li>La trattativa la conduce <b>un solo agente</b>. Gli altri non parlano con i rapinatori.</li>
+      <li>Si chiede sempre di vedere l'ostaggio prima di concedere qualsiasi richiesta.</li>
+      <li>Si apre il fuoco solo se i rapinatori sparano o mettono in immediato pericolo l'ostaggio o gli agenti.</li>
+    </ul>
+  </article>
+</section>
+
+<!-- ═════════ CAPITOLO V ═════════ -->
+<section class="capitolo" id="cap-5" data-r="V" data-t="Comunicazioni">
+  <div class="cap-testa"><span class="num">V</span><div><small>Capitolo quinto</small><h2>Comunicazioni</h2></div></div>
+
+  <article class="art" id="art-5-1" data-t="Codici radio">
+    <h3><span class="ref">ART. 5.1</span>Codici radio</h3>
+    <p>Gli stessi codici sono consultabili su Discord con <kbd>/codici-radio</kbd>.</p>
+    <div class="radio-ctl" role="group" aria-label="Filtra i codici radio">
+      <input id="rq" type="search" placeholder="Cerca un codice o un significato" aria-label="Cerca codice radio">
+      <button class="filtro" type="button" data-f="tutti" aria-pressed="true">Tutti</button>
+      <button class="filtro" type="button" data-f="stato" aria-pressed="false">Stato</button>
+      <button class="filtro" type="button" data-f="intervento" aria-pressed="false">Intervento</button>
+      <button class="filtro" type="button" data-f="emergenza" aria-pressed="false">Emergenza</button>
+      <button class="filtro" type="button" data-f="gang" aria-pressed="false">Gang Unit</button>
+    </div>
+    <div class="tab"><table id="radio">
+      <thead><tr><th>Codice</th><th>Significato</th><th>Tipo</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+  </article>
+
+  <article class="art" id="art-5-2" data-t="Codici di risposta">
+    <h3><span class="ref">ART. 5.2</span>Codici di risposta</h3>
+    <div class="tab"><table>
+      <thead><tr><th>Codice</th><th>Significato</th><th>Lampeggianti</th><th>Sirene</th></tr></thead>
+      <tbody>
+        <tr><td class="cod">Codice 1</td><td>Intervento non urgente</td><td>No</td><td>No</td></tr>
+        <tr><td class="cod">Codice 2</td><td>Urgente, arrivo rapido e silenzioso</td><td>Sì</td><td>No</td></tr>
+        <tr><td class="cod">Codice 3</td><td>Emergenza</td><td>Sì</td><td>Sì</td></tr>
+        <tr><td class="cod">Codice 4</td><td>Situazione sotto controllo, nessun altro supporto</td><td>No</td><td>No</td></tr>
+        <tr><td class="cod">Codice 5</td><td>Avvicinamento silenzioso a un covo o a un sospetto</td><td>No</td><td>No</td></tr>
+      </tbody>
+    </table></div>
+  </article>
+
+  <article class="art" id="art-5-3" data-t="Regole del canale">
+    <h3><span class="ref">ART. 5.3</span>Regole del canale</h3>
+    <ul>
+      <li>Ascoltare prima di parlare. Non si interrompe chi sta comunicando.</li>
+      <li>Ci si identifica sempre con la matricola: «GU-104 a centrale».</li>
+      <li>Si conferma ogni ordine con <b>10-4</b>.</li>
+      <li>Durante un 10-99 o un 10-71 il canale resta libero per le unità coinvolte.</li>
+      <li>Le operazioni sotto copertura usano un canale separato, scelto nel briefing.</li>
+    </ul>
+    <div class="box nota"><b class="e">NOTA</b><p>Ogni richiesta di supporto dice sempre tre cose: <b>dove</b>, <b>cosa</b> succede e <b>di cosa</b> c'è bisogno.</p></div>
+  </article>
+
+  <article class="art" id="art-5-4" data-t="Coordinamento con altri reparti">
+    <h3><span class="ref">ART. 5.4</span>Coordinamento con altri reparti</h3>
+    <ul>
+      <li>Su una scena con più reparti il responsabile è uno solo, deciso dal grado più alto presente o dalla centrale.</li>
+      <li>La GU può chiedere supporto alle pattuglie ordinarie per cinturare un'area, ma conduce lei l'operazione contro la gang.</li>
+      <li>Le informazioni passate ad altri reparti si limitano a ciò che serve per l'intervento.</li>
+    </ul>
+  </article>
+</section>
+
+<!-- ═════════ CAPITOLO VI ═════════ -->
+<section class="capitolo" id="cap-6" data-r="VI" data-t="Disciplina">
+  <div class="cap-testa"><span class="num">VI</span><div><small>Capitolo sesto</small><h2>Disciplina e sanzioni</h2></div></div>
+
+  <article class="art" id="art-6-1" data-t="Violazioni">
+    <h3><span class="ref">ART. 6.1</span>Violazioni</h3>
+    <div class="tab"><table>
+      <thead><tr><th>Classe</th><th>Esempi</th></tr></thead>
+      <tbody>
+        <tr><td class="sig">LIEVE</td><td>Ritardo, divisa non conforme, timbratura dimenticata, linguaggio poco consono in radio.</td></tr>
+        <tr><td class="sig">MEDIA</td><td>Rapporto non scritto, ordine ignorato, uso di forza non necessario, inattività non giustificata.</td></tr>
+        <tr><td class="sig">GRAVE</td><td>Corruzione, fuga di informazioni, abuso di potere, metagaming, appartenenza a una gang, raid non autorizzato.</td></tr>
+      </tbody>
+    </table></div>
+    <p>La recidiva fa salire la violazione di una classe.</p>
+  </article>
+
+  <article class="art" id="art-6-2" data-t="Provvedimenti">
+    <h3><span class="ref">ART. 6.2</span>Provvedimenti</h3>
+    <div class="scala">
+      <div style="--c:#9fb8ff"><b>1</b><span>Richiamo verbale</span><small>Annotato dal Supervisore</small></div>
+      <div style="--c:var(--giallo)"><b>2</b><span>Richiamo scritto</span><small>Con <kbd>/richiamo</kbd>, resta a registro</small></div>
+      <div style="--c:#ff9f43"><b>3</b><span>Sospensione</span><small>Da 1 a 7 giorni senza servizio</small></div>
+      <div style="--c:#ff6b6b"><b>4</b><span>Retrocessione</span><small>Uno o più gradi</small></div>
+      <div style="--c:var(--rosso)"><b>5</b><span>Espulsione</span><small>Uscita dalla GU</small></div>
+    </div>
+    <p>Tre richiami scritti attivi portano in automatico alla convocazione davanti all'Alto Comando (<kbd>/convocazione</kbd>).</p>
+  </article>
+
+  <article class="art" id="art-6-3" data-t="Procedimento e difesa">
+    <h3><span class="ref">ART. 6.3</span>Procedimento e difesa</h3>
+    <ol>
+      <li><b>Segnalazione</b>: da un superiore o tramite ticket Affari Interni.</li>
+      <li><b>Istruttoria</b>: raccolta di rapporti, bodycam e testimoni.</li>
+      <li><b>Ascolto</b>: l'agente ha sempre diritto a spiegare la sua versione.</li>
+      <li><b>Decisione</b>: presa da chi ha un grado superiore a quello dell'agente e non era coinvolto nel fatto.</li>
+      <li><b>Registrazione</b>: il provvedimento finisce nel registro disciplinare, visibile solo all'Alto Comando.</li>
+    </ol>
+    <h4>Aggravanti</h4>
+    <ul><li>Recidiva, danno all'immagine della GU, menzogna durante l'istruttoria, grado elevato.</li></ul>
+    <h4>Attenuanti</h4>
+    <ul><li>Ammissione spontanea, prima violazione, buon servizio documentato.</li></ul>
+  </article>
+
+  <article class="art" id="art-6-4" data-t="Inattività e ferie">
+    <h3><span class="ref">ART. 6.4</span>Inattività e ferie</h3>
+    <ul>
+      <li>Dopo <b>5 giorni</b> senza servizio il bot invia un avviso in privato.</li>
+      <li>Dopo <b>10 giorni</b> l'agente viene segnalato all'Alto Comando.</li>
+      <li>Ferie e assenze vanno chieste prima con <kbd>/ferie</kbd> o <kbd>/assenza</kbd>: chi è in ferie approvate non viene contato.</li>
+    </ul>
+  </article>
+</section>
+
+<!-- ═════════ CAPITOLO VII ═════════ -->
+<section class="capitolo" id="cap-7" data-r="VII" data-t="Documentazione">
+  <div class="cap-testa"><span class="num">VII</span><div><small>Capitolo settimo</small><h2>Documentazione e rapporti</h2></div></div>
+
+  <article class="art" id="art-7-1" data-t="Rapporto d'arresto">
+    <h3><span class="ref">ART. 7.1</span>Rapporto d'arresto</h3>
+    <p>Si compila con <kbd>/rapporto</kbd> oppure si incolla questo modulo nel canale dei rapporti. Un rapporto per ogni azione, anche con più arrestati.</p>
+    <div class="modulo"><div class="mh"><b>Modulo · rapporto d'arresto</b><button class="copia" type="button">Copia modulo</button></div><pre>RAPPORTO D'ARRESTO · GANG UNIT
+Data e ora:
+Luogo:
+Agente redattore (matricola):
+Agenti coinvolti:
+Arrestato/i (nome · documento):
+Gang di appartenenza (se nota):
+Reati contestati (art.):
+Dinamica dei fatti:
+Uso della forza (livello e motivo):
+Oggetti sequestrati:
+Armi sequestrate (matricola):
+Diritti Miranda letti: SÌ / NO
+Pena e multa proposte:</pre></div>
+    <div class="box obbligo"><b class="e">OBBLIGO</b><p>Ogni arma sequestrata va registrata con la sua matricola. Se la matricola è abrasa, si scrive «ABRASA».</p></div>
+  </article>
+
+  <article class="art" id="art-7-2" data-t="Rapporto d'operazione">
+    <h3><span class="ref">ART. 7.2</span>Rapporto d'operazione</h3>
+    <div class="modulo"><div class="mh"><b>Modulo · rapporto d'operazione</b><button class="copia" type="button">Copia modulo</button></div><pre>RAPPORTO D'OPERAZIONE · GANG UNIT
+Nome operazione:
+Autorizzata da (grado · nome):
+Data e ora:
+Obiettivo (covo / laboratorio / magazzino):
+Gang coinvolta e classe:
+Squadra (matricole e ruoli):
+Esito: RIUSCITA / PARZIALE / FALLITA
+Arresti:
+Sequestri (droga, armi, denaro):
+Feriti tra agenti e civili:
+Note per l'intelligence:</pre></div>
+  </article>
+
+  <article class="art" id="art-7-3" data-t="Scheda gang">
+    <h3><span class="ref">ART. 7.3</span>Scheda gang</h3>
+    <div class="modulo"><div class="mh"><b>Modulo · scheda gang</b><button class="copia" type="button">Copia modulo</button></div><pre>SCHEDA GANG · RISERVATO GU
+Nome della gang:
+Classe: A / B / C
+Colori e segni distintivi:
+Territorio:
+Capo / capi conosciuti:
+Membri conosciuti:
+Veicoli abituali (modello · targa):
+Attività principali:
+Alleanze e rivalità:
+Ultimo aggiornamento (data · matricola):</pre></div>
+  </article>
+
+  <article class="art" id="art-7-4" data-t="Rapporto recluta">
+    <h3><span class="ref">ART. 7.4</span>Rapporto recluta</h3>
+    <p>Il Supervisore che ha affiancato una Recluta compila la valutazione a fine turno con <kbd>/valutazione</kbd>. Ogni voce va da 1 a 10.</p>
+    <div class="modulo"><div class="mh"><b>Modulo · rapporto recluta</b><button class="copia" type="button">Copia modulo</button></div><pre>RAPPORTO RECLUTA · GANG UNIT
+Recluta (nome · matricola):
+Supervisore:
+Data del turno:
+Conoscenza del regolamento: /10
+Comunicazioni radio: /10
+Guida e inseguimenti: /10
+Gestione dei soggetti: /10
+Comportamento: /10
+Esito: POSITIVO / NEGATIVO
+Note:</pre></div>
+  </article>
+</section>
+
+<!-- ═════════ APPENDICE ═════════ -->
+<section class="capitolo" id="app-a" data-r="A" data-t="Appendice">
+  <div class="cap-testa"><span class="num">A</span><div><small>Appendice</small><h2>Glossario e approvazione</h2></div></div>
+
+  <article class="art" id="art-a-1" data-t="Glossario">
+    <h3><span class="ref">A.1</span>Glossario</h3>
+    <div class="tab"><table>
+      <thead><tr><th>Termine</th><th>Significato</th></tr></thead>
+      <tbody>
+        <tr><td><b>Civetta</b></td><td>Veicolo senza livrea, con lampeggianti nascosti.</td></tr>
+        <tr><td><b>Covo</b></td><td>Luogo usato da una gang come base, magazzino o laboratorio.</td></tr>
+        <tr><td><b>Briefing</b></td><td>Riunione prima di un'operazione per assegnare obiettivi e ruoli.</td></tr>
+        <tr><td><b>Debriefing</b></td><td>Riunione dopo un'operazione per analizzare cosa è andato bene e male.</td></tr>
+        <tr><td><b>Flagranza</b></td><td>Reato colto mentre viene commesso o subito dopo.</td></tr>
+        <tr><td><b>PIT</b></td><td>Manovra che fa girare il veicolo in fuga spingendone il retro.</td></tr>
+        <tr><td><b>Responsabile</b></td><td>L'agente che comanda un intervento o un'operazione.</td></tr>
+        <tr><td><b>Territorio</b></td><td>Zona della città controllata da una gang.</td></tr>
+        <tr><td><b>MDT</b></td><td>Il terminale di bordo per consultare persone, veicoli e ricercati.</td></tr>
+      </tbody>
+    </table></div>
+  </article>
+
+  <article class="art" id="art-a-2" data-t="Registro modifiche">
+    <h3><span class="ref">A.2</span>Registro modifiche</h3>
+    <div class="tab"><table>
+      <thead><tr><th>Rev.</th><th>Data</th><th>Modifiche</th></tr></thead>
+      <tbody><tr><td class="sig">1.0</td><td>12/11/2026</td><td>Prima stesura del regolamento della Gang Unit.</td></tr></tbody>
+    </table></div>
+  </article>
+
+  <article class="art" id="art-a-3" data-t="Approvazione">
+    <h3><span class="ref">A.3</span>Approvazione</h3>
+    <p>Il presente regolamento entra in vigore il 12/11/2026. Chi entra nella Gang Unit dichiara di averlo letto e accettato.</p>
+    <div class="firma">
+      <div><small>Comandante</small><b>Alto Comando GU</b><div class="riga"></div></div>
+      <div><small>Vice Comandante</small><b>Alto Comando GU</b><div class="riga"></div></div>
+      <div><small>Redatto da</small><b>Ufficio del Personale</b><div class="riga"></div></div>
+    </div>
+  </article>
+</section>
+      <div class="vuoto" id="vuoto">Nessun articolo contiene questa parola. Prova con un termine più breve.</div>
+    </div>
+  </div>
+  <button class="indice-btn" id="indice-btn" type="button" aria-controls="indice" aria-expanded="false">☰ Indice</button>
+</section>
+
+<!-- ═════════════════════════ STRUMENTI ═════════════════════════ -->
+<section class="vista" id="v-strumenti" data-vista="strumenti" aria-label="Strumenti" hidden>
+  <div class="wrap">
+    <div class="pagina-testa">
+      <div><small>Consultazione rapida</small><h1>Strumenti <span>operativi</span></h1><p>Quello che serve durante il turno, senza cercare nel regolamento: codici radio, checklist, moduli pronti per Discord, carriera e domande frequenti.</p></div>
+    </div>
+    <div class="schede" role="tablist" aria-label="Strumenti">
+      <button type="button" role="tab" data-s="radio" aria-selected="true">Codici radio</button>
+      <button type="button" role="tab" data-s="prontuario" aria-selected="false">Prontuario</button>
+      <button type="button" role="tab" data-s="moduli" aria-selected="false">Moduli</button>
+      <button type="button" role="tab" data-s="carriera" aria-selected="false">Carriera</button>
+      <button type="button" role="tab" data-s="faq" aria-selected="false">Domande frequenti</button>
+    </div>
+
+    <div class="pannello-s" id="s-radio" role="tabpanel">
+      <div class="due">
+        <div class="riquadro">
+          <h3 class="r-tit">Tutti i codici <small>Anche su Discord con <kbd>/codici-radio</kbd></small></h3>
+          <div class="radio-ctl" role="group" aria-label="Filtra i codici radio">
+            <input type="search" placeholder="Cerca un codice o un significato" aria-label="Cerca codice radio">
+            <button class="filtro" type="button" data-f="tutti" aria-pressed="true">Tutti</button>
+            <button class="filtro" type="button" data-f="stato" aria-pressed="false">Stato</button>
+            <button class="filtro" type="button" data-f="intervento" aria-pressed="false">Intervento</button>
+            <button class="filtro" type="button" data-f="emergenza" aria-pressed="false">Emergenza</button>
+            <button class="filtro" type="button" data-f="gang" aria-pressed="false">Gang Unit</button>
+          </div>
+          <div class="tab"><table><thead><tr><th>Codice</th><th>Significato</th><th>Tipo</th></tr></thead><tbody></tbody></table></div>
+        </div>
+        <div class="riquadro flash" id="flash">
+          <h3 class="r-tit">Allenamento <small>Indovina il significato, poi gira la carta</small></h3>
+          <button class="flash-carta" id="flash-carta" type="button" aria-live="polite">
+            <span class="fronte"><small>Codice</small><b id="fc-cod">10-4</b><em>Tocca per girare</em></span>
+            <span class="retro"><small>Significato</small><b id="fc-sig">Ricevuto</b><em id="fc-tipo"></em></span>
+          </button>
+          <div class="flash-azioni"><button type="button" class="btn" data-fa="no">✗ Non lo sapevo</button><button type="button" class="btn p" data-fa="si">✓ Lo sapevo</button></div>
+          <div class="flash-stat" id="flash-stat"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pannello-s" id="s-prontuario" role="tabpanel" hidden>
+      <p class="intro-s">Spunta i passi mentre li fai. Ogni scheda rimanda all'articolo completo del regolamento.</p>
+      <div class="griglia-p" id="prontuario"></div>
+    </div>
+
+    <div class="pannello-s" id="s-moduli" role="tabpanel" hidden>
+      <p class="intro-s">Scegli il modulo, compila i campi e premi <b>Copia per Discord</b>: il testo esce già formattato da incollare nel canale dei rapporti.</p>
+      <div class="moduli-sel" id="moduli-sel"></div>
+      <div class="moduli-area" id="moduli-area"></div>
+    </div>
+
+    <div class="pannello-s" id="s-carriera" role="tabpanel" hidden>
+      <p class="intro-s">Il percorso di un agente della Gang Unit, grado per grado. Tempi e requisiti vengono dall'art. 2.4.</p>
+      <ol class="carriera" id="carriera"></ol>
+    </div>
+
+    <div class="pannello-s" id="s-faq" role="tabpanel" hidden>
+      <div class="faq" id="faq"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ BANDI ═════════════════════════ -->
+<section class="vista" id="v-bandi" data-vista="bandi" aria-label="Bandi" hidden>
+  <div class="wrap">
+    <div class="pagina-testa">
+      <div><small>Reclutamento</small><h1>Bandi e <span>candidature</span></h1><p>I bandi della Gang Unit si pubblicano solo qui. Le candidature si inviano dal sito e arrivano direttamente all'Alto Comando su Discord: non serve più scriverle a mano nei canali.</p></div>
+    </div>
+    <ol class="percorso rivela">
+      <li><b>1</b><span>Leggi il bando</span><small>Requisiti e scadenze</small></li>
+      <li><b>2</b><span>Studia il regolamento</span><small>Le verifiche di capitolo aiutano</small></li>
+      <li><b>3</b><span>Candidatura online</span><small>Arriva subito all'Alto Comando</small></li>
+      <li><b>4</b><span>Colloquio</span><small>Con un Tenente II o superiore</small></li>
+      <li><b>5</b><span>Recluta</span><small>Poi l'esame d'accademia per Agente I</small></li>
+    </ol>
+    <div class="bandi-lista" id="bandi-lista"></div>
+    <div class="candidatura" id="candidatura" hidden></div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ ESAMI ═════════════════════════ -->
+<section class="vista" id="v-esami" data-vista="esami" aria-label="Esami" hidden>
+  <div class="wrap">
+    <div id="esami-centro">
+      <div class="pagina-testa">
+        <div><small>Accademia Gang Unit</small><h1>Centro <span>esami</span></h1><p>Ogni verifica pesca le domande a caso e mescola le risposte. Hai un tempo limite, le risposte giuste si vedono solo alla consegna e le uscite dalla pagina vengono registrate, come in un esame vero.</p></div>
+      </div>
+      <div class="candidato rivela" id="candidato"></div>
+      <div class="finale-card rivela" id="finale-card"></div>
+      <div class="sez-testa"><small>Una per capitolo</small><h2>Verifiche di capitolo</h2><span class="sez-dx" id="cap-superati"></span></div>
+      <div class="esami-griglia" id="esami-griglia"></div>
+    </div>
+    <div id="esami-prova" hidden></div>
+  </div>
+</section>
+
+<!-- ═════════════════════════ AREA COMANDO ═════════════════════════ -->
+<section class="vista" id="v-comando" data-vista="comando" aria-label="Area Comando" hidden>
+  <div class="wrap"><div id="cmd"></div></div>
+</section>
+
+<!-- ═════════════════════════ SEZIONE RISERVATA ═════════════════════════ -->
+<section class="vista" id="v-bloccato" data-vista="bloccato" aria-label="Sezione riservata" hidden>
+  <div class="wrap"><div id="bloccato"></div></div>
+</section>
+
+</main>
+
+<!-- porta d'ingresso: accesso con Discord -->
+<div class="porta" id="porta" hidden role="dialog" aria-modal="true" aria-label="Accesso al sito"><div class="porta-sfondo" aria-hidden="true"><i class="lb"></i><i class="lr"></i></div><div class="porta-box" id="porta-box"></div></div>
+
+<footer>
+  <div class="in">
+    <img src="immagini/distintivo.jpg" alt="" width="40" height="40">
+    <div><b>Gang Unit · NOW V4</b>Los Santos Police Department · Regolamento interno GU-NOW-001</div>
+    <nav class="f-link"><a href="#regolamento">Regolamento</a><a href="#strumenti">Strumenti</a><a href="#bandi">Bandi</a><a href="#esami">Esami</a></nav>
+    <span class="f-rev">Rev. 1.0 · 12/11/2026</span>
+  </div>
+</footer>
+<a class="su" href="#top" aria-label="Torna in alto" id="su">↑</a>
+
+<dialog class="dialogo" id="dialogo"><form method="dialog"><h3 id="dg-t"></h3><p id="dg-p"></p><div class="dg-az"><button class="btn" value="no" id="dg-no">Annulla</button><button class="btn p" value="si" id="dg-si">Conferma</button></div></form></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<canvas id="coriandoli" aria-hidden="true"></canvas>
+<div id="stampa"></div>
+
+<script src="script/impostazioni.js"></script>
+<script src="script/bandi.js"></script>
+<script src="script/esami.js"></script>
+<script src="script/sito.js"></script>
+</body>
+</html>
