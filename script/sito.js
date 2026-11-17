@@ -587,8 +587,8 @@
       ${inv ? `<div class="esame-stato ok"><span class="es-i">✓</span><div><b>Hai già inviato una candidatura per questo bando</b><small>Il ${dataIt(new Date(inv.data))} · protocollo ${esc(inv.protocollo)}. Inviala di nuovo solo se te lo chiede l'Alto Comando.</small></div></div>` : ''}
       <form id="cand-form" novalidate><div class="form-griglia">
         ${campo('nome', 'Nome e cognome del personaggio', `<input name="nome" required maxlength="60" value="${esc(c.nome || att?.nome || '')}" placeholder="es. Marco Rossi">`, 1)}
-        ${campo('matricola', 'Matricola LSPD', `<input name="matricola" required maxlength="20" value="${esc(c.matricola || att?.matricola || '')}" placeholder="es. LSPD-214">`, 1)}
-        ${campo('grado', 'Grado attuale', `<input name="grado" maxlength="40" placeholder="es. Agente II LSPD">`)}
+        ${campo('matricola', 'Documento del personaggio', `<input name="matricola" maxlength="20" value="${esc(c.matricola || att?.matricola || '')}" placeholder="es. numero del documento in città (facoltativo)">`)}
+        ${campo('grado', 'Lavoro attuale in città', `<input name="grado" maxlength="40" placeholder="es. meccanico, tassista, disoccupato">`)}
         ${campo('discord', 'Nome Discord', `<input name="discord" required maxlength="40" value="${esc(c.discord || '')}" placeholder="es. @marcorossi">`, 1)}
         ${campo('discordid', 'ID Discord (solo numeri)', `<input name="discordid" required inputmode="numeric" maxlength="20" value="${esc(c.discordId || '')}" placeholder="es. 633339352491229184">`, 1, true, 'Su Discord: Impostazioni → Avanzate → attiva «Modalità sviluppatore», poi tasto destro sul tuo nome → «Copia ID utente». Serve per mostrarti l\'esito qui sul sito.')}
         ${campo('eta', 'Età reale', `<input name="eta" type="number" min="10" max="99" required placeholder="es. 19">`, 1)}
@@ -617,7 +617,8 @@
     const f = new FormData(form), get = k => String(f.get(k) || '').trim();
     const fasce = f.getAll('fasce');
     const err = [];
-    for (const k of ['nome', 'matricola', 'discord', 'eta', 'ore', ...(b.interno ? ['ufficiale'] : [])]) if (!get(k)) err.push(k);
+    for (const k of ['nome', 'discord', 'eta', 'ore', ...(b.interno ? ['ufficiale'] : [])]) if (!get(k)) err.push(k);
+    if (get('eta') && +get('eta') < 17) err.push('eta');
     if (!/^\d{17,20}$/.test(get('discordid'))) err.push('discordid');
     const eta = +get('eta'); if (get('eta') && (eta < 10 || eta > 99)) err.push('eta');
     if (!fasce.length) err.push('fasce');
@@ -632,13 +633,13 @@
     LS.set('gu-candidato', { ...candidato(), nome: d.nome, matricola: d.matricola, discord: d.discord, discordId: d.discordId });
     const protocollo = 'GU-C-' + firma(d.nome + d.matricola + b.id + Date.now()).slice(0, 5);
     const esame = att ? `${att.punti}/${att.tot} (${att.pct}%) · codice ${att.codice}` : e ? `${e.best}% (miglior risultato)` : 'Non sostenuto';
-    const testo = [`📨 **CANDIDATURA · ${b.titolo.toUpperCase()}**`, `${b.numero} · Protocollo \`${protocollo}\``, '', `**Personaggio:** ${d.nome}`, `**Matricola LSPD:** ${d.matricola}`, `**Grado attuale:** ${d.grado || '—'}`, `**Discord:** ${d.discord} (ID ${d.discordId})`, `**Età:** ${d.eta}`, `**Ore a settimana:** ${d.ore}`, `**Fasce orarie:** ${d.fasce}`, b.interno ? `**Ufficiale proponente:** ${d.ufficiale}` : null, `**Esame d'accademia:** ${esame}`, '', `**Esperienze:** ${d.esperienze || '—'}`, '', `**Motivazione:**\n${d.motivazione}`, '', `**Caso pratico:**\n${d.caso}`].filter(x => x !== null).join('\n');
+    const testo = [`📨 **CANDIDATURA · ${b.titolo.toUpperCase()}**`, `${b.numero} · Protocollo \`${protocollo}\``, '', `**Personaggio:** ${d.nome}`, `**Documento:** ${d.matricola || '—'}`, `**Lavoro attuale:** ${d.grado || '—'}`, `**Discord:** ${d.discord} (ID ${d.discordId})`, `**Età:** ${d.eta}`, `**Ore a settimana:** ${d.ore}`, `**Fasce orarie:** ${d.fasce}`, b.interno ? `**Ufficiale proponente:** ${d.ufficiale}` : null, `**Esame d'accademia:** ${esame}`, '', `**Esperienze:** ${d.esperienze || '—'}`, '', `**Motivazione:**\n${d.motivazione}`, '', `**Caso pratico:**\n${d.caso}`].filter(x => x !== null).join('\n');
     const payload = {
       username: 'Gang Unit · Bandi', avatar_url: avatar(), ...menzione(CFG.menzioneCandidature),
       embeds: [{
         title: `📨 Nuova candidatura · ${b.titolo}`.slice(0, 250), description: `**${b.numero}** · Protocollo \`${protocollo}\``, color: 0x3b82f6,
         fields: [
-          { name: 'Personaggio', value: tronca(d.nome, 100), inline: true }, { name: 'Matricola LSPD', value: tronca(d.matricola, 60), inline: true }, { name: 'Grado attuale', value: tronca(d.grado, 60), inline: true },
+          { name: 'Personaggio', value: tronca(d.nome, 100), inline: true }, { name: 'Documento', value: tronca(d.matricola, 60), inline: true }, { name: 'Lavoro attuale', value: tronca(d.grado, 60), inline: true },
           { name: 'Discord', value: `<@${d.discordId}> · ${tronca(d.discord, 40)}`, inline: true }, { name: 'Età', value: tronca(d.eta, 10), inline: true }, { name: 'Ore a settimana', value: tronca(d.ore, 40), inline: true },
           { name: 'Fasce orarie', value: tronca(d.fasce, 200), inline: true }, { name: 'Esame d\'accademia', value: tronca(esame, 200), inline: true },
           ...(b.interno ? [{ name: 'Ufficiale proponente', value: tronca(d.ufficiale, 100), inline: true }] : []),
@@ -1124,7 +1125,7 @@
     return `<div class="cmd-filtri"><input type="search" data-cf="qC" value="${esc(C.qC)}" placeholder="Cerca nome, matricola, Discord o protocollo"><select data-cf="fS"><option value="tutti">Tutti gli stati</option>${STATI_C.map(s => `<option${C.fS === s ? ' selected' : ''}>${s}</option>`).join('')}</select></div>
       <div class="cmd-cand">${L.map(c => { const st = c.stato || 'Nuova'; return `<details class="cmd-c" style="--sc:${COL_STATO[st] || 'var(--blu)'}"><summary><span class="pill st">${esc(st)}</span><div><b>${esc(c.nome || '—')}</b><small>${esc(c.matricola || '')} · ${esc(c.discord || '')} · ${esc(c.bando_titolo || c.bando_id || '')}</small></div><em>${quando(c.creato)}</em></summary>
         <div class="cmd-c-corpo">
-          <div class="cmd-dati">${[['Protocollo', c.protocollo], ['ID Discord', c.discord_id], ['Grado attuale', c.grado], ['Età', c.eta], ['Ore a settimana', c.ore], ['Fasce orarie', c.fasce], ['Esame d\'accademia', c.esame], ...(c.ufficiale ? [['Ufficiale proponente', c.ufficiale]] : [])].map(([k, v]) => `<div><small>${k}</small><b>${esc(v ?? '—') || '—'}</b></div>`).join('')}</div>
+          <div class="cmd-dati">${[['Protocollo', c.protocollo], ['ID Discord', c.discord_id], ['Documento', c.matricola], ['Lavoro attuale', c.grado], ['Età', c.eta], ['Ore a settimana', c.ore], ['Fasce orarie', c.fasce], ['Esame d\'accademia', c.esame], ...(c.ufficiale ? [['Ufficiale proponente', c.ufficiale]] : [])].map(([k, v]) => `<div><small>${k}</small><b>${esc(v ?? '—') || '—'}</b></div>`).join('')}</div>
           ${[['Esperienze', c.esperienze], ['Motivazione', c.motivazione], ['Caso pratico', c.caso]].map(([k, v]) => `<div class="cmd-testo"><small>${k}</small><p>${esc(v || '—')}</p></div>`).join('')}
           <form class="cmd-gestisci" data-cid="${esc(c.id)}"><label class="campo"><span>Stato</span><select name="stato">${STATI_C.map(s => `<option${st === s ? ' selected' : ''}>${s}</option>`).join('')}</select></label><label class="campo"><span>Messaggio per il candidato</span><input name="messaggio" value="${esc(c.messaggio || '')}" maxlength="500" placeholder="Lo vede lui sul sito, es. Colloquio venerdì alle 21"></label><label class="campo"><span>Nota interna</span><input name="nota" value="${esc(c.nota || '')}" maxlength="300" placeholder="La vede solo l'Alto Comando"></label><div class="cmd-gest-az"><button class="btn p piccolo" type="submit">Salva</button><button class="btn piccolo ghost" type="button" data-copia-cand="${esc(c.id)}">📋 Copia</button><button class="btn piccolo ghost" type="button" data-del-cand="${esc(c.id)}">🗑</button></div></form>
         </div></details>`; }).join('') || '<p class="intro-s">Nessuna candidatura con questi filtri.</p>'}</div>`;
@@ -1180,7 +1181,7 @@
     const csv = ['Data;Nome;Matricola;Discord;Esame;Punti;Totale;Percentuale;Esito;Tempo;Uscite dalla pagina;Tentativo;Codice', ...L.map(e => [quando(e.creato), e.nome, e.matricola, e.discord, nomeEsame(e.esame), e.punti, e.totale, e.percentuale, e.superato ? 'Superato' : 'Non superato', e.tempo != null ? mmss(+e.tempo) : '', e.uscite, e.tentativo, e.codice].map(q).join(';'))].join('\r\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })); a.download = `esiti-esami-${dataIt(new Date()).replace(/\//g, '-')}.csv`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
   }
-  const testoCand = c => [`📨 **CANDIDATURA · ${(c.bando_titolo || '').toUpperCase()}**`, `Protocollo \`${c.protocollo || '—'}\` · Stato: **${c.stato || 'Nuova'}**`, '', `**Personaggio:** ${c.nome}`, `**Matricola LSPD:** ${c.matricola}`, `**Grado attuale:** ${c.grado || '—'}`, `**Discord:** ${c.discord}${c.discord_id ? ` (<@${c.discord_id}>)` : ''}`, `**Età:** ${c.eta ?? '—'}`, `**Ore a settimana:** ${c.ore || '—'}`, `**Fasce orarie:** ${c.fasce || '—'}`, c.ufficiale ? `**Ufficiale proponente:** ${c.ufficiale}` : null, `**Esame d'accademia:** ${c.esame || '—'}`, '', `**Motivazione:**\n${c.motivazione || '—'}`, '', `**Caso pratico:**\n${c.caso || '—'}`].filter(x => x !== null).join('\n');
+  const testoCand = c => [`📨 **CANDIDATURA · ${(c.bando_titolo || '').toUpperCase()}**`, `Protocollo \`${c.protocollo || '—'}\` · Stato: **${c.stato || 'Nuova'}**`, '', `**Personaggio:** ${c.nome}`, `**Documento:** ${c.matricola || '—'}`, `**Lavoro attuale:** ${c.grado || '—'}`, `**Discord:** ${c.discord}${c.discord_id ? ` (<@${c.discord_id}>)` : ''}`, `**Età:** ${c.eta ?? '—'}`, `**Ore a settimana:** ${c.ore || '—'}`, `**Fasce orarie:** ${c.fasce || '—'}`, c.ufficiale ? `**Ufficiale proponente:** ${c.ufficiale}` : null, `**Esame d'accademia:** ${c.esame || '—'}`, '', `**Motivazione:**\n${c.motivazione || '—'}`, '', `**Caso pratico:**\n${c.caso || '—'}`].filter(x => x !== null).join('\n');
   async function elimina(tab, id, cosa) {
     if (!(await chiedi(`Eliminare ${cosa}?`, 'L\'eliminazione è definitiva: non si può annullare.', 'Elimina', 'Annulla'))) return;
     const sb = await db(); const { error } = await sb.from(tab).delete().eq('id', id);

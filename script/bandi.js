@@ -13,16 +13,16 @@ window.GU_BANDI = [
     numero: 'Bando n. 01/2026',
     titolo: 'Reclutamento Agenti Gang Unit',
     sottotitolo: "Ingresso come Recluta, con percorso verso Agente I",
-    apertoA: 'Agenti LSPD in servizio',
+    apertoA: 'Cittadini di Los Santos, non LSPD',
     apertura: '2026-11-12T18:00',
     chiusura: '2026-11-30T23:59',
     posti: 6,
     esameRichiesto: false,
-    descrizione: "La Gang Unit cerca agenti motivati da inserire nel reparto come Reclute. I selezionati seguiranno la formazione prevista dall'art. 2.4 del regolamento, sempre affiancati da un Supervisore, fino alla promozione ad Agente I.",
+    descrizione: "La Gang Unit cerca persone motivate da inserire nel reparto come Reclute. I selezionati seguiranno la formazione prevista dall'art. 2.4 del regolamento, sempre affiancati da un Supervisore, fino alla promozione ad Agente I.",
     requisiti: [
-      'Essere agente LSPD in servizio da almeno 2 settimane',
-      'Nessun richiamo scritto attivo e nessuna sanzione dello staff negli ultimi 30 giorni',
-      'Età reale minima di 16 anni, microfono funzionante e Discord attivo',
+      'Non far parte della LSPD',
+      'Nessuna sanzione dello staff negli ultimi 30 giorni',
+      'Età reale minima di 17 anni, microfono funzionante e Discord attivo',
       'Disponibilità di almeno 8 ore di servizio a settimana',
       'Nessun personaggio legato a gang o organizzazioni criminali (art. 1.4)'
     ],
@@ -33,9 +33,9 @@ window.GU_BANDI = [
     ],
     fasi: [
       ['Candidatura', 'Si invia dal sito entro la chiusura del bando.'],
-      ['Verifica requisiti', "L'Ufficio del Personale controlla servizio e richiami."],
+      ['Verifica requisiti', "L'Ufficio del Personale controlla i requisiti e le sanzioni dello staff."],
       ['Colloquio', 'Colloquio orale su Discord con un Tenente II o superiore, con un caso pratico.'],
-      ['Esito', 'Graduatoria comunicata su Discord entro 5 giorni dalla chiusura.'],
+      ['Esito', "L'esito compare sul sito, nella pagina Bandi, entro 5 giorni dalla chiusura."],
       ['Periodo da Recluta', "Almeno 1 settimana affiancati, 3 valutazioni positive e l'esame d'accademia per diventare Agente I."]
     ],
     note: 'Le candidature incomplete o inviate fuori dal sito non vengono valutate.'
