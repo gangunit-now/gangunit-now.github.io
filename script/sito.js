@@ -291,7 +291,7 @@
     if (r.v === 'regolamento' && r.el) scorso = scorriA(r.el, cambia);
     if (r.v === 'strumenti') apriScheda(r.s || scheda);
     if (r.v === 'bandi') {
-      renderBandi(r.bando);
+      renderBandi(r.bando); renderEsiti();
       if (r.cand) { apriCandidatura(r.cand); scorso = scorriA('candidatura', cambia); }
       else { $('#candidatura').hidden = true; if (r.bando) scorso = scorriA('bando-' + r.bando, cambia); }
     }
@@ -590,6 +590,7 @@
         ${campo('matricola', 'Matricola LSPD', `<input name="matricola" required maxlength="20" value="${esc(c.matricola || att?.matricola || '')}" placeholder="es. LSPD-214">`, 1)}
         ${campo('grado', 'Grado attuale', `<input name="grado" maxlength="40" placeholder="es. Agente II LSPD">`)}
         ${campo('discord', 'Nome Discord', `<input name="discord" required maxlength="40" value="${esc(c.discord || '')}" placeholder="es. @marcorossi">`, 1)}
+        ${campo('discordid', 'ID Discord (solo numeri)', `<input name="discordid" required inputmode="numeric" maxlength="20" value="${esc(c.discordId || '')}" placeholder="es. 633339352491229184">`, 1, true, 'Su Discord: Impostazioni → Avanzate → attiva «Modalità sviluppatore», poi tasto destro sul tuo nome → «Copia ID utente». Serve per mostrarti l\'esito qui sul sito.')}
         ${campo('eta', 'Età reale', `<input name="eta" type="number" min="10" max="99" required placeholder="es. 19">`, 1)}
         ${campo('ore', 'Ore di servizio a settimana', `<select name="ore" required><option value="">Scegli…</option><option>Meno di 8 ore</option><option>8–15 ore</option><option>15–25 ore</option><option>Più di 25 ore</option></select>`, 1)}
         ${b.interno ? campo('ufficiale', 'Ufficiale che ti propone', `<input name="ufficiale" required maxlength="60" placeholder="Grado e nome">`, 1, true) : ''}
@@ -617,6 +618,7 @@
     const fasce = f.getAll('fasce');
     const err = [];
     for (const k of ['nome', 'matricola', 'discord', 'eta', 'ore', ...(b.interno ? ['ufficiale'] : [])]) if (!get(k)) err.push(k);
+    if (!/^\d{17,20}$/.test(get('discordid'))) err.push('discordid');
     const eta = +get('eta'); if (get('eta') && (eta < 10 || eta > 99)) err.push('eta');
     if (!fasce.length) err.push('fasce');
     if (get('motivazione').length < 150) err.push('motivazione');
@@ -626,18 +628,18 @@
     if (err.length) { err.forEach(k => $(`[data-campo="${k}"]`, form)?.classList.add('errore')); $(`[data-campo="${err[0]}"]`, form)?.scrollIntoView({ behavior: 'smooth', block: 'center' }); toast('Controlla i campi evidenziati in rosso', 'ko'); return; }
     const e = esiti().finale, att = e?.attestato;
     const btn = $('button[type="submit"]', form); btn.disabled = true; btn.textContent = 'Invio in corso…';
-    const d = { nome: get('nome'), matricola: get('matricola'), grado: get('grado'), discord: get('discord'), eta: get('eta'), ore: get('ore'), ufficiale: get('ufficiale'), fasce: fasce.join(', '), esperienze: get('esperienze'), motivazione: get('motivazione'), caso: get('caso') };
-    LS.set('gu-candidato', { ...candidato(), nome: d.nome, matricola: d.matricola, discord: d.discord });
+    const d = { nome: get('nome'), matricola: get('matricola'), grado: get('grado'), discord: get('discord'), discordId: get('discordid'), eta: get('eta'), ore: get('ore'), ufficiale: get('ufficiale'), fasce: fasce.join(', '), esperienze: get('esperienze'), motivazione: get('motivazione'), caso: get('caso') };
+    LS.set('gu-candidato', { ...candidato(), nome: d.nome, matricola: d.matricola, discord: d.discord, discordId: d.discordId });
     const protocollo = 'GU-C-' + firma(d.nome + d.matricola + b.id + Date.now()).slice(0, 5);
     const esame = att ? `${att.punti}/${att.tot} (${att.pct}%) · codice ${att.codice}` : e ? `${e.best}% (miglior risultato)` : 'Non sostenuto';
-    const testo = [`📨 **CANDIDATURA · ${b.titolo.toUpperCase()}**`, `${b.numero} · Protocollo \`${protocollo}\``, '', `**Personaggio:** ${d.nome}`, `**Matricola LSPD:** ${d.matricola}`, `**Grado attuale:** ${d.grado || '—'}`, `**Discord:** ${d.discord}`, `**Età:** ${d.eta}`, `**Ore a settimana:** ${d.ore}`, `**Fasce orarie:** ${d.fasce}`, b.interno ? `**Ufficiale proponente:** ${d.ufficiale}` : null, `**Esame d'accademia:** ${esame}`, '', `**Esperienze:** ${d.esperienze || '—'}`, '', `**Motivazione:**\n${d.motivazione}`, '', `**Caso pratico:**\n${d.caso}`].filter(x => x !== null).join('\n');
+    const testo = [`📨 **CANDIDATURA · ${b.titolo.toUpperCase()}**`, `${b.numero} · Protocollo \`${protocollo}\``, '', `**Personaggio:** ${d.nome}`, `**Matricola LSPD:** ${d.matricola}`, `**Grado attuale:** ${d.grado || '—'}`, `**Discord:** ${d.discord} (ID ${d.discordId})`, `**Età:** ${d.eta}`, `**Ore a settimana:** ${d.ore}`, `**Fasce orarie:** ${d.fasce}`, b.interno ? `**Ufficiale proponente:** ${d.ufficiale}` : null, `**Esame d'accademia:** ${esame}`, '', `**Esperienze:** ${d.esperienze || '—'}`, '', `**Motivazione:**\n${d.motivazione}`, '', `**Caso pratico:**\n${d.caso}`].filter(x => x !== null).join('\n');
     const payload = {
       username: 'Gang Unit · Bandi', avatar_url: avatar(), ...menzione(CFG.menzioneCandidature),
       embeds: [{
         title: `📨 Nuova candidatura · ${b.titolo}`.slice(0, 250), description: `**${b.numero}** · Protocollo \`${protocollo}\``, color: 0x3b82f6,
         fields: [
           { name: 'Personaggio', value: tronca(d.nome, 100), inline: true }, { name: 'Matricola LSPD', value: tronca(d.matricola, 60), inline: true }, { name: 'Grado attuale', value: tronca(d.grado, 60), inline: true },
-          { name: 'Discord', value: tronca(d.discord, 60), inline: true }, { name: 'Età', value: tronca(d.eta, 10), inline: true }, { name: 'Ore a settimana', value: tronca(d.ore, 40), inline: true },
+          { name: 'Discord', value: `<@${d.discordId}> · ${tronca(d.discord, 40)}`, inline: true }, { name: 'Età', value: tronca(d.eta, 10), inline: true }, { name: 'Ore a settimana', value: tronca(d.ore, 40), inline: true },
           { name: 'Fasce orarie', value: tronca(d.fasce, 200), inline: true }, { name: 'Esame d\'accademia', value: tronca(esame, 200), inline: true },
           ...(b.interno ? [{ name: 'Ufficiale proponente', value: tronca(d.ufficiale, 100), inline: true }] : []),
           { name: 'Esperienze', value: tronca(d.esperienze, 1000) }, { name: 'Motivazione', value: tronca(d.motivazione, 1000) }, { name: 'Caso pratico', value: tronca(d.caso, 1000) },
@@ -645,17 +647,17 @@
         footer: { text: 'Inviata dal sito Gang Unit · NOW V4' }, timestamp: new Date().toISOString(),
       }],
     };
-    const [r0, rdb] = await Promise.all([inviaDiscord(CFG.webhookCandidature, payload), salvaDB('candidature', { bando_id: b.id, bando_titolo: b.titolo, protocollo, nome: d.nome, matricola: d.matricola, grado: d.grado || null, discord: d.discord, eta: +d.eta || null, ore: d.ore, fasce: d.fasce, ufficiale: d.ufficiale || null, esperienze: d.esperienze || null, motivazione: d.motivazione, caso: d.caso, esame })]);
+    const [r0, rdb] = await Promise.all([inviaDiscord(CFG.webhookCandidature, payload), salvaDB('candidature', { bando_id: b.id, bando_titolo: b.titolo, protocollo, nome: d.nome, matricola: d.matricola, grado: d.grado || null, discord: d.discord, discord_id: d.discordId, eta: +d.eta || null, ore: d.ore, fasce: d.fasce, ufficiale: d.ufficiale || null, esperienze: d.esperienze || null, motivazione: d.motivazione, caso: d.caso, esame })]);
     const r = r0.ok || !rdb.ok ? r0 : { ok: true };
-    const inviate = LS.get('gu-candidature', {}); inviate[b.id] = { protocollo, data: Date.now(), discord: r.ok }; LS.set('gu-candidature', inviate);
+    const inviate = LS.get('gu-candidature', {}); inviate[b.id] = { protocollo, data: Date.now(), discord: r.ok, discordId: d.discordId }; LS.set('gu-candidature', inviate);
     const box = $('#candidatura');
     box.innerHTML = `<div class="inviata"><div class="ok-i">${r.ok ? '✓' : '📋'}</div><h2>${r.ok ? 'Candidatura inviata' : 'Candidatura pronta'}</h2><div class="protocollo">Protocollo ${protocollo}</div>
-      <p>${r.ok ? 'La tua candidatura è arrivata all\'Alto Comando. Riceverai l\'esito entro 5 giorni dalla chiusura del bando: tieni d\'occhio i messaggi privati.' : `${r.motivo === 'off' ? 'Il collegamento automatico a Discord non è ancora attivo.' : 'Non è stato possibile inviarla a Discord in automatico.'} Copia il testo qui sotto e incollalo nel canale delle candidature.`}</p>
+      <p>${r.ok ? 'La tua candidatura è arrivata all\'Alto Comando. Quando l\'Alto Comando decide, <b>l\'esito compare qui sul sito</b>, nella pagina Bandi. Conserva il codice pratica qui sopra: ti serve per controllarlo da un altro telefono o PC.' : `${r.motivo === 'off' ? 'Il collegamento automatico a Discord non è ancora attivo.' : 'Non è stato possibile inviarla a Discord in automatico.'} Copia il testo qui sotto e incollalo nel canale delle candidature.`}</p>
       <div class="esito-az" style="justify-content:center;margin:14px 0">${r.ok ? '' : `<button class="btn p" type="button" id="cand-copia">📋 Copia candidatura</button>${CFG.invitoDiscord ? `<a class="btn" href="${esc(CFG.invitoDiscord)}" target="_blank" rel="noopener">Apri Discord</a>` : ''}`}<a class="btn ghost" href="#bandi">Torna ai bandi</a></div>
       ${r.ok ? '' : `<div class="modulo"><div class="mh"><b>Testo della candidatura</b></div><pre>${esc(testo)}</pre></div>`}</div>`;
     if (!r.ok) $('#cand-copia').addEventListener('click', async () => toast((await copia(testo)) ? 'Candidatura copiata: incollala su Discord' : 'Copia non riuscita', 'ok'));
     else { toast('Candidatura inviata ✓', 'ok'); coriandoli(); }
-    history.replaceState(null, '', '#bando-' + b.id); renderBandi();
+    history.replaceState(null, '', '#bando-' + b.id); renderBandi(); renderEsiti();
     box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -1122,9 +1124,9 @@
     return `<div class="cmd-filtri"><input type="search" data-cf="qC" value="${esc(C.qC)}" placeholder="Cerca nome, matricola, Discord o protocollo"><select data-cf="fS"><option value="tutti">Tutti gli stati</option>${STATI_C.map(s => `<option${C.fS === s ? ' selected' : ''}>${s}</option>`).join('')}</select></div>
       <div class="cmd-cand">${L.map(c => { const st = c.stato || 'Nuova'; return `<details class="cmd-c" style="--sc:${COL_STATO[st] || 'var(--blu)'}"><summary><span class="pill st">${esc(st)}</span><div><b>${esc(c.nome || '—')}</b><small>${esc(c.matricola || '')} · ${esc(c.discord || '')} · ${esc(c.bando_titolo || c.bando_id || '')}</small></div><em>${quando(c.creato)}</em></summary>
         <div class="cmd-c-corpo">
-          <div class="cmd-dati">${[['Protocollo', c.protocollo], ['Grado attuale', c.grado], ['Età', c.eta], ['Ore a settimana', c.ore], ['Fasce orarie', c.fasce], ['Esame d\'accademia', c.esame], ...(c.ufficiale ? [['Ufficiale proponente', c.ufficiale]] : [])].map(([k, v]) => `<div><small>${k}</small><b>${esc(v ?? '—') || '—'}</b></div>`).join('')}</div>
+          <div class="cmd-dati">${[['Protocollo', c.protocollo], ['ID Discord', c.discord_id], ['Grado attuale', c.grado], ['Età', c.eta], ['Ore a settimana', c.ore], ['Fasce orarie', c.fasce], ['Esame d\'accademia', c.esame], ...(c.ufficiale ? [['Ufficiale proponente', c.ufficiale]] : [])].map(([k, v]) => `<div><small>${k}</small><b>${esc(v ?? '—') || '—'}</b></div>`).join('')}</div>
           ${[['Esperienze', c.esperienze], ['Motivazione', c.motivazione], ['Caso pratico', c.caso]].map(([k, v]) => `<div class="cmd-testo"><small>${k}</small><p>${esc(v || '—')}</p></div>`).join('')}
-          <form class="cmd-gestisci" data-cid="${esc(c.id)}"><label class="campo"><span>Stato</span><select name="stato">${STATI_C.map(s => `<option${st === s ? ' selected' : ''}>${s}</option>`).join('')}</select></label><label class="campo"><span>Nota interna</span><input name="nota" value="${esc(c.nota || '')}" maxlength="300" placeholder="La vede solo l'Alto Comando"></label><div class="cmd-gest-az"><button class="btn p piccolo" type="submit">Salva</button><button class="btn piccolo ghost" type="button" data-copia-cand="${esc(c.id)}">📋 Copia</button><button class="btn piccolo ghost" type="button" data-del-cand="${esc(c.id)}">🗑</button></div></form>
+          <form class="cmd-gestisci" data-cid="${esc(c.id)}"><label class="campo"><span>Stato</span><select name="stato">${STATI_C.map(s => `<option${st === s ? ' selected' : ''}>${s}</option>`).join('')}</select></label><label class="campo"><span>Messaggio per il candidato</span><input name="messaggio" value="${esc(c.messaggio || '')}" maxlength="500" placeholder="Lo vede lui sul sito, es. Colloquio venerdì alle 21"></label><label class="campo"><span>Nota interna</span><input name="nota" value="${esc(c.nota || '')}" maxlength="300" placeholder="La vede solo l'Alto Comando"></label><div class="cmd-gest-az"><button class="btn p piccolo" type="submit">Salva</button><button class="btn piccolo ghost" type="button" data-copia-cand="${esc(c.id)}">📋 Copia</button><button class="btn piccolo ghost" type="button" data-del-cand="${esc(c.id)}">🗑</button></div></form>
         </div></details>`; }).join('') || '<p class="intro-s">Nessuna candidatura con questi filtri.</p>'}</div>`;
   }
   function schedaVerifiche() {
@@ -1178,7 +1180,7 @@
     const csv = ['Data;Nome;Matricola;Discord;Esame;Punti;Totale;Percentuale;Esito;Tempo;Uscite dalla pagina;Tentativo;Codice', ...L.map(e => [quando(e.creato), e.nome, e.matricola, e.discord, nomeEsame(e.esame), e.punti, e.totale, e.percentuale, e.superato ? 'Superato' : 'Non superato', e.tempo != null ? mmss(+e.tempo) : '', e.uscite, e.tentativo, e.codice].map(q).join(';'))].join('\r\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' })); a.download = `esiti-esami-${dataIt(new Date()).replace(/\//g, '-')}.csv`; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
   }
-  const testoCand = c => [`📨 **CANDIDATURA · ${(c.bando_titolo || '').toUpperCase()}**`, `Protocollo \`${c.protocollo || '—'}\` · Stato: **${c.stato || 'Nuova'}**`, '', `**Personaggio:** ${c.nome}`, `**Matricola LSPD:** ${c.matricola}`, `**Grado attuale:** ${c.grado || '—'}`, `**Discord:** ${c.discord}`, `**Età:** ${c.eta ?? '—'}`, `**Ore a settimana:** ${c.ore || '—'}`, `**Fasce orarie:** ${c.fasce || '—'}`, c.ufficiale ? `**Ufficiale proponente:** ${c.ufficiale}` : null, `**Esame d'accademia:** ${c.esame || '—'}`, '', `**Motivazione:**\n${c.motivazione || '—'}`, '', `**Caso pratico:**\n${c.caso || '—'}`].filter(x => x !== null).join('\n');
+  const testoCand = c => [`📨 **CANDIDATURA · ${(c.bando_titolo || '').toUpperCase()}**`, `Protocollo \`${c.protocollo || '—'}\` · Stato: **${c.stato || 'Nuova'}**`, '', `**Personaggio:** ${c.nome}`, `**Matricola LSPD:** ${c.matricola}`, `**Grado attuale:** ${c.grado || '—'}`, `**Discord:** ${c.discord}${c.discord_id ? ` (<@${c.discord_id}>)` : ''}`, `**Età:** ${c.eta ?? '—'}`, `**Ore a settimana:** ${c.ore || '—'}`, `**Fasce orarie:** ${c.fasce || '—'}`, c.ufficiale ? `**Ufficiale proponente:** ${c.ufficiale}` : null, `**Esame d'accademia:** ${c.esame || '—'}`, '', `**Motivazione:**\n${c.motivazione || '—'}`, '', `**Caso pratico:**\n${c.caso || '—'}`].filter(x => x !== null).join('\n');
   async function elimina(tab, id, cosa) {
     if (!(await chiedi(`Eliminare ${cosa}?`, 'L\'eliminazione è definitiva: non si può annullare.', 'Elimina', 'Annulla'))) return;
     const sb = await db(); const { error } = await sb.from(tab).delete().eq('id', id);
@@ -1221,10 +1223,10 @@
     const fg = e.target.closest('.cmd-gestisci');
     if (fg) {
       const f = new FormData(fg), sb = await db();
-      const { error } = await sb.from('candidature').update({ stato: String(f.get('stato')), nota: String(f.get('nota') || '').trim() }).eq('id', fg.dataset.cid);
+      const { error } = await sb.from('candidature').update({ stato: String(f.get('stato')), nota: String(f.get('nota') || '').trim() || null, messaggio: String(f.get('messaggio') || '').trim() || null }).eq('id', fg.dataset.cid);
       if (error) { toast('Salvataggio non riuscito: ' + error.message, 'ko'); return; }
-      const x = C.cand.find(y => String(y.id) === fg.dataset.cid); if (x) { x.stato = String(f.get('stato')); x.nota = String(f.get('nota') || '').trim(); }
-      toast('Candidatura aggiornata ✓', 'ok'); renderCmd();
+      const x = C.cand.find(y => String(y.id) === fg.dataset.cid); if (x) { x.stato = String(f.get('stato')); x.nota = String(f.get('nota') || '').trim(); x.messaggio = String(f.get('messaggio') || '').trim(); }
+      toast('Candidatura aggiornata ✓ Il candidato vede l\'esito sul sito', 'ok'); renderCmd();
     }
   });
   if (DB_ATTIVO) db().then(sb => {
@@ -1388,6 +1390,53 @@
   porta.addEventListener('drop', e => { const d = e.target.closest('#pt-drop'); if (!d) return; e.preventDefault(); d.classList.remove('sopra'); leggiScreen(e.dataTransfer.files[0]); });
   porta.addEventListener('submit', e => { if (e.target.id === 'pt-form') { e.preventDefault(); inviaScreen(e.target); } });
   document.addEventListener('paste', e => { if (porta.hidden || pbox.dataset.passo !== 'screen') return; const f = [...(e.clipboardData?.files || [])].find(x => x.type.startsWith('image/')); if (f) { e.preventDefault(); leggiScreen(f); } });
+
+  /* ═════════════ ESITO DELLA CANDIDATURA (lo vede il candidato sul sito) ═════════════ */
+  const ICO_STATO = { 'Nuova': '📨', 'In valutazione': '🔎', 'Colloquio fissato': '📅', 'Accettata': '✅', 'Respinta': '✖' };
+  const SPIEG_STATO = { 'Nuova': 'La candidatura è arrivata: l\'Alto Comando non l\'ha ancora aperta.', 'In valutazione': 'L\'Alto Comando sta valutando la tua candidatura.', 'Colloquio fissato': 'Sei stato chiamato per il colloquio: leggi il messaggio qui sotto.', 'Accettata': 'Complimenti! Sei stato preso nella Gang Unit.', 'Respinta': 'Questa volta la candidatura non è stata accettata. Potrai riprovare al prossimo bando.' };
+  async function chiediEsito(protocollo, discordId) {
+    const sb = await db(); if (!sb) return null;
+    try { const { data, error } = await sb.rpc('esito_candidatura', { p_protocollo: protocollo, p_discord: discordId }); if (error) return null; return Array.isArray(data) ? (data[0] || null) : data; } catch { return null; }
+  }
+  const cartaEsito = (e, prot) => { const st = e.stato || 'Nuova'; return `<div class="esito-cand" style="--sc:${COL_STATO[st] || 'var(--blu)'}"><span class="ec-i">${ICO_STATO[st] || '📨'}</span><div class="ec-t"><small>${esc(e.bando_titolo || 'Candidatura')} · Codice pratica ${esc(prot)}</small><b>${esc(st)}</b><p>${SPIEG_STATO[st] || ''}</p>${e.messaggio ? `<blockquote><small>Messaggio dall'Alto Comando</small>${esc(e.messaggio)}</blockquote>` : ''}</div></div>`; };
+  async function controllaEsiti() {
+    const mie = Object.entries(LS.get('gu-candidature', {})).filter(([, v]) => v && v.protocollo && v.discordId);
+    const ris = await Promise.all(mie.map(async ([bid, v]) => ({ bid, v, e: await chiediEsito(v.protocollo, v.discordId) })));
+    return ris.filter(x => x.e);
+  }
+  async function renderEsiti() {
+    const box = $('#esiti-cand'); if (!box) return;
+    if (!DB_ATTIVO) { box.hidden = true; return; }
+    const ris = await controllaEsiti();
+    const visti = LS.get('gu-esiti-visti', {}); let festa = false;
+    for (const { v, e } of ris) { if (e.stato === 'Accettata' && visti[v.protocollo] !== 'Accettata') festa = true; visti[v.protocollo] = e.stato; }
+    LS.set('gu-esiti-visti', visti);
+    const c = candidato();
+    box.hidden = false;
+    box.innerHTML = `${ris.length ? `<div class="esiti-testa"><small>Le tue candidature</small><h3>Esito della candidatura</h3></div>${ris.map(({ v, e }) => cartaEsito(e, v.protocollo)).join('')}` : ''}
+      <details class="controlla"${ris.length ? '' : ''}><summary>${ris.length ? 'Controlla un\'altra candidatura' : 'Hai già inviato una candidatura? Controlla l\'esito'}</summary>
+        <form id="form-esito" class="form-griglia" novalidate><label class="campo"><span>Codice pratica</span><input name="prot" maxlength="12" placeholder="es. GU-C-8K2PQ" autocapitalize="characters"></label><label class="campo"><span>ID Discord</span><input name="did" inputmode="numeric" maxlength="20" value="${esc(c.discordId || '')}" placeholder="es. 633339352491229184"></label><div class="largo"><button class="btn p piccolo" type="submit">Controlla l'esito</button></div></form>
+        <div id="esito-manuale"></div></details>`;
+    if (festa && vista === 'bandi') coriandoli();
+  }
+  document.addEventListener('submit', async e => {
+    if (e.target.id !== 'form-esito') return;
+    e.preventDefault();
+    const f = new FormData(e.target), prot = String(f.get('prot') || '').trim().toUpperCase(), did = String(f.get('did') || '').trim();
+    if (!/^GU-C-[A-Z0-9]{3,8}$/.test(prot) || !/^\d{17,20}$/.test(did)) { toast('Controlla codice pratica e ID Discord', 'ko'); return; }
+    const out = $('#esito-manuale'); out.innerHTML = '<p class="intro-s">Controllo…</p>';
+    const ris = await chiediEsito(prot, did);
+    if (!ris) { out.innerHTML = '<p class="intro-s">Nessuna candidatura con questi dati. Controlla che codice e ID siano scritti giusti.</p>'; return; }
+    const tutte = LS.get('gu-candidature', {}); tutte[ris.bando_id || prot] = { ...(tutte[ris.bando_id || prot] || {}), protocollo: prot, discordId: did, data: Date.now() }; LS.set('gu-candidature', tutte);
+    LS.set('gu-candidato', { ...candidato(), discordId: did });
+    renderEsiti();
+  });
+  // al caricamento: se l'esito è cambiato dall'ultima volta, avviso
+  if (DB_ATTIVO) setTimeout(async () => {
+    const ris = await controllaEsiti(), visti = LS.get('gu-esiti-visti', {});
+    const nuovi = ris.filter(({ v, e }) => visti[v.protocollo] && visti[v.protocollo] !== e.stato);
+    if (nuovi.length && vista !== 'bandi') toast(`Novità sulla tua candidatura: ${nuovi[0].e.stato}. Apri la pagina Bandi`, 'ok');
+  }, 2500);
 
   /* ═════════════ AVVIO ═════════════ */
   nastro(); filtraRadio($('#art-5-1')); filtraRadio($('#s-radio .riquadro')); aggiornaLetti(); minaccia(livello, false); aggiornaBandiHome(); aggiornaCTAEsami();

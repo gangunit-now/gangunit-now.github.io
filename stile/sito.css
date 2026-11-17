@@ -1022,6 +1022,27 @@ html.porta-su,html.porta-su body{overflow:hidden}
   .cmd-porta{padding:30px 18px;margin-top:30px}
 }
 
+/* esito della candidatura visto dal candidato */
+.esiti-cand{margin:0 0 22px;padding:20px;border-radius:22px;background:linear-gradient(180deg,var(--pannello),var(--pannello2));border:1px solid var(--linea2)}
+.esiti-testa small{font:700 11.5px var(--f-mono);letter-spacing:.14em;color:var(--blu-chiaro);text-transform:uppercase}
+.esiti-testa h3{font:900 30px/1 var(--f-titolo);text-transform:uppercase;margin:4px 0 14px}
+.esito-cand{--sc:var(--blu);display:flex;gap:16px;align-items:flex-start;padding:18px;border-radius:16px;margin-bottom:12px;border:1px solid color-mix(in srgb,var(--sc) 45%,transparent);background:radial-gradient(420px 200px at 0 0,color-mix(in srgb,var(--sc) 16%,transparent),transparent 70%),var(--pannello2);animation:entra .5s}
+.ec-i{flex:none;width:62px;height:62px;border-radius:18px;display:grid;place-items:center;font-size:32px;background:color-mix(in srgb,var(--sc) 18%,transparent);border:1px solid color-mix(in srgb,var(--sc) 45%,transparent);animation:timbro .6s cubic-bezier(.2,1.6,.4,1)}
+.ec-t{min-width:0}
+.ec-t small{font:700 11.5px var(--f-mono);color:var(--tenue)}
+.ec-t b{display:block;font:900 32px/1.05 var(--f-titolo);text-transform:uppercase;color:var(--sc);margin:3px 0 4px}
+.ec-t p{margin:0;color:#cdd5e8}
+.ec-t blockquote{margin:12px 0 0;padding:10px 14px;border-left:3px solid var(--sc);background:rgba(255,255,255,.03);border-radius:0 10px 10px 0;white-space:pre-wrap;color:#fff}
+.ec-t blockquote small{display:block;margin-bottom:3px;white-space:normal}
+.controlla summary{cursor:pointer;color:var(--blu-chiaro);font-weight:700;list-style:none}
+.controlla summary::-webkit-details-marker{display:none}
+.controlla summary:before{content:"▸ "}
+.controlla[open] summary:before{content:"▾ "}
+.controlla form{margin-top:12px;align-items:end}
+.controlla #esito-manuale{margin-top:12px}
+.cmd-gestisci{grid-template-columns:190px 1fr 1fr auto}
+@media (max-width:900px){.cmd-gestisci{grid-template-columns:1fr}}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*:before,*:after{animation:none!important;transition:none!important}
